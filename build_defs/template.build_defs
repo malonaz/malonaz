@@ -1,0 +1,71 @@
+def templated_text_file(filename:str, content:str, replace={}, deps=[]):
+    """
+    templated_text_file is a utility function that creates a file with the given filename, and content.
+    the `replace` parameter allows a user to pass-in substitutions.
+    """
+    cmd = f"echo -e '{content}'"
+    for key, value in replace.items():
+        cmd += f" | sed 's@{key}@{value}@g'"
+    cmd += " | sed '/^$/d'" # Remove blank lines.
+    cmd += " > $OUTS"
+    return genrule(
+        name = f'{filename}',
+        cmd = cmd,
+        outs = [f'{filename}'],
+        deps = deps,
+    )
+
+def go_template(
+        name:str,
+        templates:list=[],
+        data:str=None,
+        format:str="json",
+        deps:list=[],
+        visibility:list=[],
+):
+    """
+    Use Go's text/template to generate a file.
+    """
+    templates_arg = ",".join([f"$(location {t})" for t in templates])
+    args = [
+        f"--output {name}",
+        f"--data-format {format}",
+    ] + [f"--template $(location {t})" for t in templates]
+    if data:
+        args.append(f"--data $(location {data})")
+    return genrule(
+        name=name,
+        cmd = [
+            f"$TOOLS " + " ".join(args),
+        ],
+        tools = ["//tools/template"],
+        deps = deps + templates + [data],
+        outs = [name],
+        labels = ["codegen"],
+        visibility = visibility,
+    )
+
+def validated_file(
+        name:str,
+        src:str,
+        schema:str,
+        format:str="json",
+        exported_deps:list=[],
+        visibility:list=[],
+):
+    """
+    Used to validate a file against a format.
+    """
+    return genrule(
+        name = name,
+        srcs = [src],
+        exported_deps = exported_deps,
+        cmd = [
+            f"$TOOLS --file $SRCS --format {format} --schema $(location {schema})",
+            "mv $SRCS $OUTS"
+        ],
+        deps = [schema],
+        out = name,
+        tools = ["//tools/validate-schema"],
+        visibility=visibility,
+    )

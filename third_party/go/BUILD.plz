@@ -1,0 +1,483 @@
+go_mod_download(
+    name = "dario.cat__mergo",
+    _tag = "download",
+    module = "dario.cat/mergo",
+    version = "v1.0.1",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "dario.cat__mergo",
+    download = ":_dario.cat__mergo#download",
+    install = ["."],
+    module = "dario.cat/mergo",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "github.com__Masterminds__goutils",
+    _tag = "download",
+    module = "github.com/Masterminds/goutils",
+    version = "v1.1.1",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__Masterminds__goutils",
+    download = ":_github.com__Masterminds__goutils#download",
+    install = ["."],
+    module = "github.com/Masterminds/goutils",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "github.com__Masterminds__semver__v3",
+    _tag = "download",
+    module = "github.com/Masterminds/semver/v3",
+    version = "v3.3.0",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__Masterminds__semver__v3",
+    download = ":_github.com__Masterminds__semver__v3#download",
+    install = ["."],
+    module = "github.com/Masterminds/semver/v3",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "github.com__Masterminds__sprig__v3",
+    _tag = "download",
+    module = "github.com/Masterminds/sprig/v3",
+    version = "v3.3.0",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__Masterminds__sprig__v3",
+    download = ":_github.com__Masterminds__sprig__v3#download",
+    install = ["."],
+    module = "github.com/Masterminds/sprig/v3",
+    visibility = ["PUBLIC"],
+    deps = [
+        ":dario.cat__mergo",
+        ":github.com__Masterminds__goutils",
+        ":github.com__Masterminds__semver__v3",
+        ":github.com__google__uuid",
+        ":github.com__huandu__xstrings",
+        ":github.com__mitchellh__copystructure",
+        ":github.com__shopspring__decimal",
+        ":github.com__spf13__cast",
+        ":golang.org__x__crypto__bcrypt",
+        ":golang.org__x__crypto__scrypt",
+    ],
+)
+
+go_mod_download(
+    name = "github.com__bazelbuild__buildtools",
+    _tag = "download",
+    module = "github.com/peterebden/buildtools",
+    version = "v0.0.0-20201001123124-f7a36c689cc9",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__bazelbuild__buildtools__build",
+    download = ":_github.com__bazelbuild__buildtools#download",
+    install = ["build"],
+    module = "github.com/bazelbuild/buildtools",
+    visibility = ["PUBLIC"],
+    deps = [":github.com__bazelbuild__buildtools__tables"],
+)
+
+go_module(
+    name = "github.com__bazelbuild__buildtools__tables",
+    download = ":_github.com__bazelbuild__buildtools#download",
+    install = ["tables"],
+    module = "github.com/bazelbuild/buildtools",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "github.com__google__uuid",
+    _tag = "download",
+    module = "github.com/google/uuid",
+    version = "v1.6.0",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__google__uuid",
+    download = ":_github.com__google__uuid#download",
+    install = ["."],
+    module = "github.com/google/uuid",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "github.com__huandu__xstrings",
+    _tag = "download",
+    module = "github.com/huandu/xstrings",
+    version = "v1.5.0",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__huandu__xstrings",
+    download = ":_github.com__huandu__xstrings#download",
+    install = ["."],
+    module = "github.com/huandu/xstrings",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "github.com__mitchellh__copystructure",
+    _tag = "download",
+    module = "github.com/mitchellh/copystructure",
+    version = "v1.2.0",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__mitchellh__copystructure",
+    download = ":_github.com__mitchellh__copystructure#download",
+    install = ["."],
+    module = "github.com/mitchellh/copystructure",
+    visibility = ["PUBLIC"],
+    deps = [":github.com__mitchellh__reflectwalk"],
+)
+
+go_mod_download(
+    name = "github.com__mitchellh__reflectwalk",
+    _tag = "download",
+    module = "github.com/mitchellh/reflectwalk",
+    version = "v1.0.2",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__mitchellh__reflectwalk",
+    download = ":_github.com__mitchellh__reflectwalk#download",
+    install = ["."],
+    module = "github.com/mitchellh/reflectwalk",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "github.com__please-build__gcfg",
+    _tag = "download",
+    module = "github.com/please-build/gcfg",
+    version = "v1.6.0",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__please-build__gcfg",
+    download = ":_github.com__please-build__gcfg#download",
+    install = ["."],
+    module = "github.com/please-build/gcfg",
+    visibility = ["PUBLIC"],
+    deps = [
+        ":github.com__please-build__gcfg__scanner",
+        ":github.com__please-build__gcfg__token",
+        ":github.com__please-build__gcfg__types",
+        ":gopkg.in__warnings.v0",
+    ],
+)
+
+go_module(
+    name = "github.com__please-build__gcfg__scanner",
+    download = ":_github.com__please-build__gcfg#download",
+    install = ["scanner"],
+    module = "github.com/please-build/gcfg",
+    visibility = ["PUBLIC"],
+    deps = [":github.com__please-build__gcfg__token"],
+)
+
+go_module(
+    name = "github.com__please-build__gcfg__token",
+    download = ":_github.com__please-build__gcfg#download",
+    install = ["token"],
+    module = "github.com/please-build/gcfg",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_module(
+    name = "github.com__please-build__gcfg__types",
+    download = ":_github.com__please-build__gcfg#download",
+    install = ["types"],
+    module = "github.com/please-build/gcfg",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "github.com__scylladb__go-set",
+    _tag = "download",
+    module = "github.com/scylladb/go-set",
+    version = "v1.0.2",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__scylladb__go-set__strset",
+    download = ":_github.com__scylladb__go-set#download",
+    install = ["strset"],
+    module = "github.com/scylladb/go-set",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "github.com__shopspring__decimal",
+    _tag = "download",
+    module = "github.com/shopspring/decimal",
+    version = "v1.4.0",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__shopspring__decimal",
+    download = ":_github.com__shopspring__decimal#download",
+    install = ["."],
+    module = "github.com/shopspring/decimal",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "github.com__sirupsen__logrus",
+    _tag = "download",
+    module = "github.com/sirupsen/logrus",
+    version = "v1.9.3",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__sirupsen__logrus",
+    download = ":_github.com__sirupsen__logrus#download",
+    install = ["."],
+    module = "github.com/sirupsen/logrus",
+    visibility = ["PUBLIC"],
+    deps = [":golang.org__x__sys__unix"],
+)
+
+go_mod_download(
+    name = "github.com__spf13__cast",
+    _tag = "download",
+    module = "github.com/spf13/cast",
+    version = "v1.7.0",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__spf13__cast",
+    download = ":_github.com__spf13__cast#download",
+    install = ["."],
+    module = "github.com/spf13/cast",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "github.com__spf13__cobra",
+    _tag = "download",
+    module = "github.com/spf13/cobra",
+    version = "v1.9.1",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__spf13__cobra",
+    download = ":_github.com__spf13__cobra#download",
+    install = ["."],
+    module = "github.com/spf13/cobra",
+    visibility = ["PUBLIC"],
+    deps = [":github.com__spf13__pflag"],
+)
+
+go_mod_download(
+    name = "github.com__spf13__pflag",
+    _tag = "download",
+    module = "github.com/spf13/pflag",
+    version = "v1.0.6",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__spf13__pflag",
+    download = ":_github.com__spf13__pflag#download",
+    install = ["."],
+    module = "github.com/spf13/pflag",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "golang.org__x__crypto",
+    _tag = "download",
+    module = "golang.org/x/crypto",
+    version = "v0.26.0",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "golang.org__x__crypto__bcrypt",
+    download = ":_golang.org__x__crypto#download",
+    install = ["bcrypt"],
+    module = "golang.org/x/crypto",
+    visibility = ["PUBLIC"],
+    deps = [":golang.org__x__crypto__blowfish"],
+)
+
+go_module(
+    name = "golang.org__x__crypto__blowfish",
+    download = ":_golang.org__x__crypto#download",
+    install = ["blowfish"],
+    module = "golang.org/x/crypto",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_module(
+    name = "golang.org__x__crypto__pbkdf2",
+    download = ":_golang.org__x__crypto#download",
+    install = ["pbkdf2"],
+    module = "golang.org/x/crypto",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_module(
+    name = "golang.org__x__crypto__scrypt",
+    download = ":_golang.org__x__crypto#download",
+    install = ["scrypt"],
+    module = "golang.org/x/crypto",
+    visibility = ["PUBLIC"],
+    deps = [":golang.org__x__crypto__pbkdf2"],
+)
+
+go_mod_download(
+    name = "golang.org__x__mod",
+    _tag = "download",
+    module = "golang.org/x/mod",
+    version = "v0.24.0",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "golang.org__x__mod__internal__lazyregexp",
+    download = ":_golang.org__x__mod#download",
+    install = ["internal/lazyregexp"],
+    module = "golang.org/x/mod",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_module(
+    name = "golang.org__x__mod__modfile",
+    download = ":_golang.org__x__mod#download",
+    install = ["modfile"],
+    module = "golang.org/x/mod",
+    visibility = ["PUBLIC"],
+    deps = [
+        ":golang.org__x__mod__internal__lazyregexp",
+        ":golang.org__x__mod__module",
+        ":golang.org__x__mod__semver",
+    ],
+)
+
+go_module(
+    name = "golang.org__x__mod__module",
+    download = ":_golang.org__x__mod#download",
+    install = ["module"],
+    module = "golang.org/x/mod",
+    visibility = ["PUBLIC"],
+    deps = [
+        ":golang.org__x__mod__internal__lazyregexp",
+        ":golang.org__x__mod__semver",
+    ],
+)
+
+go_module(
+    name = "golang.org__x__mod__semver",
+    download = ":_golang.org__x__mod#download",
+    install = ["semver"],
+    module = "golang.org/x/mod",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "golang.org__x__sys",
+    _tag = "download",
+    module = "golang.org/x/sys",
+    version = "v0.23.0",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "golang.org__x__sys__unix",
+    download = ":_golang.org__x__sys#download",
+    install = ["unix"],
+    module = "golang.org/x/sys",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "gopkg.in__warnings.v0",
+    _tag = "download",
+    module = "gopkg.in/warnings.v0",
+    version = "v0.1.2",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "gopkg.in__warnings.v0",
+    download = ":_gopkg.in__warnings.v0#download",
+    install = ["."],
+    module = "gopkg.in/warnings.v0",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "gopkg.in__yaml.v3",
+    _tag = "download",
+    module = "gopkg.in/yaml.v3",
+    version = "v3.0.1",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "gopkg.in__yaml.v3",
+    download = ":_gopkg.in__yaml.v3#download",
+    install = ["."],
+    module = "gopkg.in/yaml.v3",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_library(
+    name = "go",
+    srcs = ["dummy.go"],
+    visibility = ["//..."],
+    deps = [
+        ":github.com__bazelbuild__buildtools__build",
+        ":github.com__please-build__gcfg",
+        ":github.com__scylladb__go-set__strset",
+        ":github.com__sirupsen__logrus",
+        ":github.com__spf13__cobra",
+        ":golang.org__x__mod__modfile",
+    ],
+)
