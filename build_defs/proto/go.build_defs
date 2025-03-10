@@ -30,18 +30,28 @@ def _go_mapping_labels(srcs:list, root_dir:str):
     return [f'proto:go-map: {pkg_dir}/{src}={import_path}' for src in srcs
                if not src.startswith(':') and not src.startswith('/')]
 
-def _import_path(root_dir):
+def _import_path(root_dir, additional_context=None):
     pkg = package_name()
     if root_dir:
         pkg = pkg.removeprefix(root_dir + "/")
-
+    if additional_context and "go_import_path" in additional_context:
+        return additional_context["go_import_path"]
     if CONFIG.GO.IMPORT_PATH:
         return join_path(CONFIG.GO.IMPORT_PATH, pkg)
     return pkg
 
 
-def go_proto_library(name:str, srcs:list, deps:list=[], visibility:list=None, labels:list&features&tags=[],
-                      test_only:bool&testonly=False, root_dir:str='', protoc_flags:list=[], additional_context:dict=None):
+def go_proto_library(
+        name:str,
+        srcs:list,
+        deps:list=[],
+        visibility:list=None,
+        labels:list&features&tags=[],
+        test_only:bool&testonly=False,
+        root_dir:str='',
+        protoc_flags:list=[],
+        additional_context:dict=None,
+):
     """Compile a .proto file to generate code for golang.
 
     Args:
@@ -54,10 +64,8 @@ def go_proto_library(name:str, srcs:list, deps:list=[], visibility:list=None, la
       root_dir (str): The directory that the protos are compiled relative to. Useful if your
                       proto files have import statements that are not relative to the repo root.
       protoc_flags (list): Additional flags to pass to protoc.
-      additional_context (dict): This is unused. It will error if set
+      additional_context (dict): Additional context.
     """
-    if additional_context:
-        fail("additional_context is not used in this rule")
     deps += [CONFIG.PLEASE_RULES.PROTOC_GEN_GO_DEP]
     protoc = protoc_rule(
         name = name,
@@ -85,7 +93,7 @@ def go_proto_library(name:str, srcs:list, deps:list=[], visibility:list=None, la
         test_only = test_only,
         labels = labels,
         visibility = visibility,
-        import_path = _import_path(root_dir),
+        import_path = _import_path(root_dir, additional_context),
     )
 
 def go_grpc_library(name:str, srcs:list, deps:list=[], visibility:list=None, labels:list&features&tags=[],
@@ -102,10 +110,8 @@ def go_grpc_library(name:str, srcs:list, deps:list=[], visibility:list=None, lab
       root_dir (str): The directory that the protos are compiled relative to. Useful if your
                       proto files have import statements that are not relative to the repo root.
       protoc_flags (list): Additional flags to pass to protoc.
-      additional_context (dict): This is unused. It will error if set
+      additional_context (dict): Additional context.
     """
-    if additional_context:
-        fail("additional_context is not used in this rule")
     deps += [CONFIG.PLEASE_RULES.PROTOC_GEN_GO_DEP, CONFIG.PLEASE_RULES.PROTOC_GEN_GRPC_GO_DEP]
     tools = {'go': [CONFIG.PLEASE_RULES.PROTOC_GEN_GO], "grpc_go": [CONFIG.PLEASE_RULES.PROTOC_GEN_GRPC_GO]}
 
@@ -138,7 +144,7 @@ def go_grpc_library(name:str, srcs:list, deps:list=[], visibility:list=None, lab
         test_only = test_only,
         labels = labels,
         visibility = visibility,
-        import_path = _import_path(root_dir),
+        import_path = _import_path(root_dir, additional_context),
     )
 
 def go_grpc_language():
