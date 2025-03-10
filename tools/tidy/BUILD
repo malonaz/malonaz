@@ -55,6 +55,8 @@ _lint_cmds = [
     f"git ls-files | grep '\.go$'| xargs gofmt -l -s -w",
     echo_message("Running 'buf format'"),
     "$(out_exe :buf) format -w \\\\$(git ls-files | grep '\\.proto' | sed -e 's/^/--path /') --exclude-path plz-out/",
+    echo_message("Removing third_party/go/dummy/BUILD.plz"),
+    "rm -f $(git rev-parse --show-toplevel)/third_party/go/dummy/BUILD.plz",
 ]
 
 sh_cmd(

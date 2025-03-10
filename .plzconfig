@@ -2,20 +2,47 @@
 version = 17.14.0
 
 [parse]
+preloadsubincludes = ///python//build_defs:python
 preloadsubincludes = ///go//build_defs:go
 preloadsubincludes = ///shell//build_defs:shell
+preloadsubincludes = ///proto//build_defs:proto
+
+[Plugin "shell"]
+Target = //plugins:shell
+
+[Plugin "python"]
+Target = //plugins:python
 
 [Plugin "go"]
 Target = //plugins:go
 ImportPath = github.com/malonaz/please-rules
 GoTool = //tools:go_toolchain|go
 
-[Plugin "shell"]
-Target = //plugins:shell
+[Plugin "proto"]
+Target = //plugins:proto
+LanguageDef = //build_defs/proto:go
 
+;;; PLUGIN DEFINITION ;;;;
 [PluginDefinition]
 Name = please_rules
 
+[PluginConfig "proto_plugin"]
+ConfigKey = ProtoPlugin
+DefaultValue = //tools/proto:protoc-gen-go
+
+[PluginConfig "grpc_plugin"]
+ConfigKey = GrpcPlugin
+DefaultValue = //tools/proto:protoc-gen-go-grpc
+
+[PluginConfig "proto_dep"]
+ConfigKey = ProtoDep
+DefaultValue = //tools/proto:protoc-gen-go-dep
+
+[PluginConfig "grpc_dep"]
+ConfigKey = GrpcDep
+DefaultValue = //tools/proto:protoc-gen-go-grpc-dep
+
+;;; ALIASES ;;;;
 [alias "tidy"]
 desc = Tidy generates build targets for dependencies and makes sure that BUILD files are up-to-date.
 cmd = run //tools/tidy
