@@ -14,3 +14,9 @@ filegroup(
     name = "k8s",
     srcs = ["k8s.build_defs"],
 )
+
+
+filegroup(
+    name = "remote",
+    srcs = ["remote.build_defs"],
+)
