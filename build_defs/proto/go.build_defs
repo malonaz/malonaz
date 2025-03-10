@@ -58,12 +58,12 @@ def go_proto_library(name:str, srcs:list, deps:list=[], visibility:list=None, la
     """
     if additional_context:
         fail("additional_context is not used in this rule")
-    deps += [CONFIG.PLEASE_RULES.PROTO_DEP]
+    deps += [CONFIG.PLEASE_RULES.PROTOC_GEN_GO_DEP]
     protoc = protoc_rule(
         name = name,
         srcs = srcs,
         language = "go",
-        tools= {"go": [CONFIG.PLEASE_RULES.PROTO_PLUGIN]},
+        tools= {"go": [CONFIG.PLEASE_RULES.PROTOC_GEN_GO]},
         protoc_flags = protoc_flags,
         plugin_flags = [
             '--go_out="$OUT_DIR"',
@@ -106,8 +106,8 @@ def go_grpc_library(name:str, srcs:list, deps:list=[], visibility:list=None, lab
     """
     if additional_context:
         fail("additional_context is not used in this rule")
-    deps += [CONFIG.PLEASE_RULES.PROTO_DEP, CONFIG.PLEASE_RULES.GRPC_DEP]
-    tools = {'go': [CONFIG.PLEASE_RULES.PROTO_PLUGIN], "grpc_go": [CONFIG.PLEASE_RULES.GRPC_PLUGIN]}
+    deps += [CONFIG.PLEASE_RULES.PROTOC_GEN_GO_DEP, CONFIG.PLEASE_RULES.PROTOC_GEN_GRPC_GO_DEP]
+    tools = {'go': [CONFIG.PLEASE_RULES.PROTOC_GEN_GO], "grpc_go": [CONFIG.PLEASE_RULES.PROTOC_GEN_GRPC_GO]}
 
     protoc = protoc_rule(
         name = name,

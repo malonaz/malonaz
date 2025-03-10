@@ -22,27 +22,27 @@ GoTool = //tools:go_toolchain|go
 Target = //plugins:proto
 LanguageDef = //build_defs/proto:go
 
-;;; PLUGIN DEFINITION ;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PLUGIN ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [PluginDefinition]
 Name = please_rules
 
-[PluginConfig "proto_plugin"]
-ConfigKey = ProtoPlugin
+[PluginConfig "protoc_gen_go"]
+ConfigKey = ProtocGenGo
 DefaultValue = //tools/proto:protoc-gen-go
 
-[PluginConfig "grpc_plugin"]
-ConfigKey = GrpcPlugin
+[PluginConfig "protoc_gen_grpc_go"]
+ConfigKey = ProtocGenGrpcGo
 DefaultValue = //tools/proto:protoc-gen-go-grpc
 
-[PluginConfig "proto_dep"]
-ConfigKey = ProtoDep
+[PluginConfig "protoc_gen_go_dep"]
+ConfigKey = ProtocGenGoDep
 DefaultValue = //tools/proto:protoc-gen-go-dep
 
-[PluginConfig "grpc_dep"]
+[PluginConfig "protoc_gen_grpc_go_dep"]
 ConfigKey = GrpcDep
 DefaultValue = //tools/proto:protoc-gen-go-grpc-dep
 
-;;; ALIASES ;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ALIASES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [alias "tidy"]
 desc = Tidy generates build targets for dependencies and makes sure that BUILD files are up-to-date.
 cmd = run //tools/tidy
