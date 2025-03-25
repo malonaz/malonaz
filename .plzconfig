@@ -15,7 +15,6 @@ Target = //plugins:python
 
 [Plugin "go"]
 Target = //plugins:go
-ImportPath = github.com/malonaz/please-rules
 GoTool = //tools:go_toolchain|go
 
 [Plugin "proto"]

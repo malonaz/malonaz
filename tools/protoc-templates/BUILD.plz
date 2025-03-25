@@ -1,0 +1,20 @@
+go_binary(
+    name = "protoc-templates",
+    srcs = [
+        "functions.go",
+        "main.go",
+        "types.go",
+    ],
+    resources = ["templates"],
+    visibility = ["//..."],
+    deps = [
+        "//proto/aip",
+        "//third_party/go:github.com__Masterminds__sprig__v3",
+        "//third_party/go:google.golang.org__protobuf__compiler__protogen",
+        "//third_party/go:google.golang.org__protobuf__proto",
+        "//third_party/go:google.golang.org__protobuf__reflect__protoreflect",
+        "//third_party/go:google.golang.org__protobuf__reflect__protoregistry",
+        "//third_party/go:google.golang.org__protobuf__types__dynamicpb",
+        "//third_party/go:google.golang.org__protobuf__types__pluginpb",
+    ],
+)
