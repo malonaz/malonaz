@@ -5,33 +5,39 @@ subinclude(
     "///go//build_defs:go"
 )
 
-# TODO(jpoole): Figure out how to apply the mapping stuff to the grpc plugin as well
 def _go_path_mapping():
     """Used to update the Go path mapping; by default it doesn't really import in the way we want."""
     def _map_go_paths(rule_name):
-        mapping = ',M'.join(get_labels(rule_name, 'proto:go-map:'))
+        labels = get_labels(rule_name, 'proto:go-map:')
+        mapping = ''
+        mapping_validate = ''
+        if len(labels) > 0:
+            mapping = 'M' + ',M'.join(labels) + ':'
+            mapping_validate = ',M' + ',M'.join(labels)
+
         cmd = get_command(rule_name)
-        cmd = cmd.replace('--go_out=', f'--go_out=M{mapping}:')
-        cmd = cmd.replace('--go-grpc_out=', f'--go-grpc_out=M{mapping}:')
-        set_command(rule_name, cmd)
+        new_cmd = cmd.replace('--go_out=', f'--go_out={mapping}')
+        new_cmd = new_cmd.replace('--go-grpc_out=', f'--go-grpc_out={mapping}')
+        new_cmd = new_cmd.replace('--grpc-gateway_out=', f'--grpc-gateway_out={mapping}')
+        new_cmd = new_cmd.replace('--cobra_out=', f'--cobra_out={mapping}')
+        new_cmd = new_cmd.replace('--templates_out=', f'--templates_out={mapping}')
+        set_command(rule_name, new_cmd)
     return _map_go_paths
 
 
-def _go_mapping_labels(srcs:list, root_dir:str):
-    import_path = get_base_path()
-    pkg_dir = import_path
+def _go_mapping_labels(name:str, srcs:list, root_dir:str):
+    base_path = get_base_path()
+    diff_pkg = basename(base_path) != name
+    if CONFIG.GO_IMPORT_PATH:
+        base_path = join_path(CONFIG.GO_IMPORT_PATH, base_path)
+    return [f'proto:go-map: {base_path}/{src}={base_path}/{name}' for src in srcs
+               if not looks_like_build_label(src) and
+               (src != (name + '.proto') or len(srcs) > 1 or diff_pkg)]
 
-    if root_dir:
-        import_path = import_path.removeprefix(root_dir + "/")
-        pkg_dir = pkg_dir.removeprefix(root_dir + "/")
-    if CONFIG.GO.IMPORT_PATH:
-        import_path = join_path(CONFIG.GO.IMPORT_PATH, import_path)
-
-    return [f'proto:go-map: {pkg_dir}/{src}={import_path}' for src in srcs
-               if not src.startswith(':') and not src.startswith('/')]
-
-def _import_path(root_dir, additional_context=None):
+def _import_path(name, root_dir, additional_context=None):
     pkg = package_name()
+    if basename(pkg) != name:
+        pkg += "/" + name
     if root_dir:
         pkg = pkg.removeprefix(root_dir + "/")
     if additional_context and "go_import_path" in additional_context:
@@ -67,18 +73,21 @@ def go_proto_library(
       additional_context (dict): Additional context.
     """
     deps += [CONFIG.PLEASE_RULES.PROTOC_GEN_GO_DEP]
+    tools= {"go": [CONFIG.PLEASE_RULES.PROTOC_GEN_GO]}
+    plugin_flags = [
+        '--go_out="$OUT_DIR"',
+        '--plugin=protoc-gen-go="$(which $TOOLS_GO)"',
+        '--go_opt=paths=source_relative',
+    ]
+
     protoc = protoc_rule(
         name = name,
         srcs = srcs,
         language = "go",
-        tools= {"go": [CONFIG.PLEASE_RULES.PROTOC_GEN_GO]},
+        tools = tools,
         protoc_flags = protoc_flags,
-        plugin_flags = [
-            '--go_out="$OUT_DIR"',
-            '--plugin=protoc-gen-go="$(which $TOOLS_GO)"',
-            '--go_opt=paths=source_relative'
-        ],
-        labels = labels + _go_mapping_labels(srcs, root_dir),
+        plugin_flags = plugin_flags,
+        labels = labels + _go_mapping_labels(name, srcs, root_dir),
         test_only = test_only,
         root_dir = root_dir,
         deps = deps,
@@ -93,7 +102,7 @@ def go_proto_library(
         test_only = test_only,
         labels = labels,
         visibility = visibility,
-        import_path = _import_path(root_dir, additional_context),
+        import_path = _import_path(name, root_dir, additional_context),
     )
 
 def go_grpc_library(name:str, srcs:list, deps:list=[], visibility:list=None, labels:list&features&tags=[],
@@ -114,6 +123,31 @@ def go_grpc_library(name:str, srcs:list, deps:list=[], visibility:list=None, lab
     """
     deps += [CONFIG.PLEASE_RULES.PROTOC_GEN_GO_DEP, CONFIG.PLEASE_RULES.PROTOC_GEN_GRPC_GO_DEP]
     tools = {'go': [CONFIG.PLEASE_RULES.PROTOC_GEN_GO], "grpc_go": [CONFIG.PLEASE_RULES.PROTOC_GEN_GRPC_GO]}
+    plugin_flags = [
+        '--plugin=protoc-gen-go="`which $TOOLS_GO`"',
+        '--go_out="$OUT_DIR"',
+        '--go_opt=paths=source_relative',
+        '--plugin=protoc-gen-go-grpc="$(which $TOOLS_GRPC_GO)"',
+        '--go-grpc_out="$OUT_DIR"',
+        '--go-grpc_opt=paths=source_relative',
+    ]
+    if additional_context and "go_cobra_cli" in additional_context:
+        plugin_flags += [
+            # Cobra plugin.
+            '--cobra_out=$OUT_DIR',
+            '--plugin=protoc-gen-cobra="`which $TOOLS_COBRA_PLUGIN`"',
+            '--cobra_opt=paths=source_relative',
+        ]
+        tools['cobra_plugin'] = [CONFIG.PLEASE_RULES.PROTOC_GEN_COBRA_GO]
+
+    if additional_context and "go_grpc_gateway" in additional_context:
+        plugin_flags += [
+            # Grpc gateway plugin.
+            '--grpc-gateway_out=$OUT_DIR',
+            '--plugin=protoc-gen-grpc-gateway="`which $TOOLS_GRPC_GATEWAY_PLUGIN`"',
+            f'--grpc-gateway_opt=paths=source_relative',
+        ]
+        tools['GRPC_GATEWAY_PLUGIN'] = [CONFIG.PLEASE_RULES.PROTOC_GEN_GRPC_GATEWAY_GO]
 
     protoc = protoc_rule(
         name = name,
@@ -121,15 +155,8 @@ def go_grpc_library(name:str, srcs:list, deps:list=[], visibility:list=None, lab
         language = "go",
         tools = tools,
         protoc_flags = protoc_flags,
-        plugin_flags = [
-            '--plugin=protoc-gen-go="`which $TOOLS_GO`"',
-            '--go_out="$OUT_DIR"',
-            '--go_opt=paths=source_relative',
-            '--plugin=protoc-gen-go-grpc="$(which $TOOLS_GRPC_GO)"',
-            '--go-grpc_out="$OUT_DIR"',
-            '--go-grpc_opt=paths=source_relative',
-        ],
-        labels = labels + _go_mapping_labels(srcs, root_dir),
+        plugin_flags = plugin_flags,
+        labels = labels + _go_mapping_labels(name, srcs, root_dir),
         test_only = test_only,
         root_dir = root_dir,
         deps = deps,
@@ -144,7 +171,7 @@ def go_grpc_library(name:str, srcs:list, deps:list=[], visibility:list=None, lab
         test_only = test_only,
         labels = labels,
         visibility = visibility,
-        import_path = _import_path(root_dir, additional_context),
+        import_path = _import_path(name, root_dir, additional_context),
     )
 
 def go_grpc_language():
