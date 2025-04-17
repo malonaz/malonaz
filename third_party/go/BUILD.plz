@@ -692,6 +692,57 @@ go_module(
 )
 
 go_mod_download(
+    name = "github.com__xeipuuv__gojsonpointer",
+    _tag = "download",
+    module = "github.com/xeipuuv/gojsonpointer",
+    version = "v0.0.0-20180127040702-4e3ac2762d5f",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__xeipuuv__gojsonpointer",
+    download = ":_github.com__xeipuuv__gojsonpointer#download",
+    install = ["."],
+    module = "github.com/xeipuuv/gojsonpointer",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_mod_download(
+    name = "github.com__xeipuuv__gojsonreference",
+    _tag = "download",
+    module = "github.com/xeipuuv/gojsonreference",
+    version = "v0.0.0-20180127040603-bd5ef7bd5415",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__xeipuuv__gojsonreference",
+    download = ":_github.com__xeipuuv__gojsonreference#download",
+    install = ["."],
+    module = "github.com/xeipuuv/gojsonreference",
+    visibility = ["PUBLIC"],
+    deps = [":github.com__xeipuuv__gojsonpointer"],
+)
+
+go_mod_download(
+    name = "github.com__xeipuuv__gojsonschema",
+    _tag = "download",
+    module = "github.com/xeipuuv/gojsonschema",
+    version = "v1.2.0",
+    visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__xeipuuv__gojsonschema",
+    download = ":_github.com__xeipuuv__gojsonschema#download",
+    install = ["."],
+    module = "github.com/xeipuuv/gojsonschema",
+    visibility = ["PUBLIC"],
+    deps = [":github.com__xeipuuv__gojsonreference"],
+)
+
+go_mod_download(
     name = "golang.org__x__crypto",
     _tag = "download",
     module = "golang.org/x/crypto",
