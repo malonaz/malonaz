@@ -7,3 +7,8 @@ proto_library(
         "//third_party/proto/googleapis:v1alpha1",
     ],
 )
+
+proto_library(
+    name = "nats",
+    srcs = ["nats.proto"],
+)

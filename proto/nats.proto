@@ -1,0 +1,192 @@
+syntax = "proto3";
+
+package nats.v1;
+
+import "google/protobuf/descriptor.proto";
+
+enum Topic {
+  TOPIC_UNSPECIFIED = 0;
+  TOPIC_USER = 1 [(topic_config) = {
+    name: "user",
+    max_age_days: 365,
+    subjects: [
+      SUBJECT_USER_CREATED,
+      SUBJECT_USER_UPDATED,
+      SUBJECT_USER_DELETED,
+      SUBJECT_USER_FAVORITE_CHARACTER_ADDED,
+      SUBJECT_USER_FAVORITE_SCENARIO_ADDED
+    ]
+  }];
+  TOPIC_CHAT = 2 [(topic_config) = {
+    name: "chat",
+    max_age_days: 365,
+    subjects: [
+      SUBJECT_CHAT_MESSAGE_CREATED,
+      SUBJECT_CHAT_MESSAGE_LIKED,
+      SUBJECT_CHAT_MESSAGE_REGENERATED
+    ]
+  }];
+  TOPIC_CHARACTER = 3 [(topic_config) = {
+    name: "character",
+    max_age_days: 365,
+    subjects: [
+      SUBJECT_CHARACTER_CREATED,
+      SUBJECT_CHARACTER_DELETED,
+      SUBJECT_CHARACTER_PUBLISHED
+    ]
+  }];
+  TOPIC_SCENARIO = 4 [(topic_config) = {
+    name: "scenario",
+    max_age_days: 365,
+    subjects: [
+      SUBJECT_SCENARIO_CREATED,
+      SUBJECT_SCENARIO_DELETED,
+      SUBJECT_SCENARIO_PUBLISHED
+    ]
+  }];
+  TOPIC_IMAGE = 5 [(topic_config) = {
+    name: "image",
+    max_age_days: 365,
+    subjects: [
+      SUBJECT_IMAGE_CREATED,
+      SUBJECT_IMAGE_DELETED,
+      SUBJECT_IMAGE_UPDATED
+    ]
+  }];
+  TOPIC_ECONOMY = 6 [(topic_config) = {
+    name: "economy",
+    max_age_days: 365,
+    subjects: [
+      SUBJECT_ECONOMY_SUBSCRIPTION_CREATED,
+      SUBJECT_ECONOMY_SUBSCRIPTION_CANCELLED
+    ]
+  }];
+  TOPIC_TELEGRAM = 7 [(topic_config) = {
+    name: "telegram",
+    max_age_days: 365,
+    subjects: [SUBJECT_TELEGRAM_MESSAGE]
+  }];
+  TOPIC_CCBILL = 8 [(topic_config) = {
+    name: "ccbill",
+    max_age_days: 3650,
+    subjects: [
+      SUBJECT_CCBILL_NEW_SALE_SUCCESS,
+      SUBJECT_CCBILL_NEW_SALE_FAILURE,
+      SUBJECT_CCBILL_CHARGEBACK,
+      SUBJECT_CCBILL_REFUND,
+      SUBJECT_CCBILL_VOID,
+      SUBJECT_CCBILL_RETURN,
+      SUBJECT_CCBILL_CANCELLATION,
+      SUBJECT_CCBILL_EXPIRATION,
+      SUBJECT_CCBILL_RENEWAL_SUCCESS,
+      SUBJECT_CCBILL_RENEWAL_FAILURE,
+      SUBJECT_CCBILL_BILLING_DATE_CHANGE
+    ]
+  }];
+  TOPIC_TRUSTPAY = 9 [(topic_config) = {
+    name: "trustpay",
+    max_age_days: 3650,
+    subjects: [
+      SUBJECT_TRUSTPAY_NEW_SALE_SUCCESS,
+      SUBJECT_TRUSTPAY_NEW_SALE_FAILURE,
+      SUBJECT_TRUSTPAY_REFUND
+    ]
+  }];
+  TOPIC_PAYMENT = 10 [(topic_config) = {
+    name: "payment",
+    max_age_days: 3650,
+    subjects: [
+      SUBJECT_PAYMENT_CREATED,
+      SUBJECT_PAYMENT_REFUND_CREATED,
+      SUBJECT_PAYMENT_REFUND_INITIATED
+    ]
+  }];
+  TOPIC_SEARCH = 11 [(topic_config) = {
+    name: "search",
+    max_age_days: 365,
+    subjects: [
+      SUBJECT_SEARCH_CHARACTER,
+      SUBJECT_SEARCH_SCENARIO
+    ]
+  }];
+}
+
+enum Subject {
+  SUBJECT_UNSPECIFIED = 0;
+
+  // User subjects (100-199)
+  SUBJECT_USER_CREATED = 100 [(subject_config) = {name: "created"}];
+  SUBJECT_USER_UPDATED = 101 [(subject_config) = {name: "updated"}];
+  SUBJECT_USER_DELETED = 102 [(subject_config) = {name: "deleted"}];
+  SUBJECT_USER_FAVORITE_CHARACTER_ADDED = 103 [(subject_config) = {name: "favorite_character.added"}];
+  SUBJECT_USER_FAVORITE_SCENARIO_ADDED = 104 [(subject_config) = {name: "favorite_scenario.added"}];
+
+  // Chat subjects (200-299)
+  SUBJECT_CHAT_MESSAGE_CREATED = 200 [(subject_config) = {name: "message.created"}];
+  SUBJECT_CHAT_MESSAGE_LIKED = 201 [(subject_config) = {name: "message.liked"}];
+  SUBJECT_CHAT_MESSAGE_REGENERATED = 202 [(subject_config) = {name: "message.regenerated"}];
+
+  // Character subjects (300-399)
+  SUBJECT_CHARACTER_CREATED = 300 [(subject_config) = {name: "created"}];
+  SUBJECT_CHARACTER_DELETED = 301 [(subject_config) = {name: "deleted"}];
+  SUBJECT_CHARACTER_PUBLISHED = 302 [(subject_config) = {name: "published"}];
+
+  // Scenario subjects (400-499)
+  SUBJECT_SCENARIO_CREATED = 400 [(subject_config) = {name: "created"}];
+  SUBJECT_SCENARIO_DELETED = 401 [(subject_config) = {name: "deleted"}];
+  SUBJECT_SCENARIO_PUBLISHED = 402 [(subject_config) = {name: "published"}];
+
+  // Image subjects (500-599)
+  SUBJECT_IMAGE_DELETED = 500 [(subject_config) = {name: "deleted"}];
+  SUBJECT_IMAGE_CREATED = 501 [(subject_config) = {name: "created"}];
+  SUBJECT_IMAGE_UPDATED = 502 [(subject_config) = {name: "updated"}];
+
+  // Economy subjects (600-699)
+  SUBJECT_ECONOMY_SUBSCRIPTION_CREATED = 600 [(subject_config) = {name: "subscription.created"}];
+  SUBJECT_ECONOMY_SUBSCRIPTION_CANCELLED = 601 [(subject_config) = {name: "subscription.cancelled"}];
+
+  // Telegram subjects (700-799)
+  SUBJECT_TELEGRAM_MESSAGE = 700 [(subject_config) = {name: "message"}];
+
+  // CCBill subjects (800-899)
+  SUBJECT_CCBILL_NEW_SALE_SUCCESS = 800 [(subject_config) = {name: "new_sale_success"}];
+  SUBJECT_CCBILL_NEW_SALE_FAILURE = 801 [(subject_config) = {name: "new_sale_failure"}];
+  SUBJECT_CCBILL_CHARGEBACK = 802 [(subject_config) = {name: "chargeback"}];
+  SUBJECT_CCBILL_REFUND = 803 [(subject_config) = {name: "refund"}];
+  SUBJECT_CCBILL_VOID = 804 [(subject_config) = {name: "void"}];
+  SUBJECT_CCBILL_RETURN = 805 [(subject_config) = {name: "return"}];
+  SUBJECT_CCBILL_CANCELLATION = 806 [(subject_config) = {name: "cancellation"}];
+  SUBJECT_CCBILL_EXPIRATION = 807 [(subject_config) = {name: "expiration"}];
+  SUBJECT_CCBILL_RENEWAL_SUCCESS = 808 [(subject_config) = {name: "renewal_success"}];
+  SUBJECT_CCBILL_RENEWAL_FAILURE = 809 [(subject_config) = {name: "renewal_failure"}];
+  SUBJECT_CCBILL_BILLING_DATE_CHANGE = 810 [(subject_config) = {name: "billing_date_change"}];
+
+  // Trustpay subjects (900-999)
+  SUBJECT_TRUSTPAY_NEW_SALE_SUCCESS = 900 [(subject_config) = {name: "new_sale_success"}];
+  SUBJECT_TRUSTPAY_NEW_SALE_FAILURE = 901 [(subject_config) = {name: "new_sale_failure"}];
+  SUBJECT_TRUSTPAY_REFUND = 902 [(subject_config) = {name: "refund"}];
+
+  // Payment subjects (1000-1099)
+  SUBJECT_PAYMENT_CREATED = 1000 [(subject_config) = {name: "created"}];
+  SUBJECT_PAYMENT_REFUND_CREATED = 1001 [(subject_config) = {name: "refund.created"}];
+  SUBJECT_PAYMENT_REFUND_INITIATED = 1002 [(subject_config) = {name: "refund.initiated"}];
+
+  // Search subjects (1100-1199)
+  SUBJECT_SEARCH_CHARACTER = 1100 [(subject_config) = {name: "character"}];
+  SUBJECT_SEARCH_SCENARIO = 1101 [(subject_config) = {name: "scenario"}];
+}
+
+extend google.protobuf.EnumValueOptions {
+  TopicConfig topic_config = 32342;
+  SubjectConfig subject_config = 32343;
+}
+
+message TopicConfig {
+  string name = 1;
+  uint64 max_age_days = 2;
+  repeated Subject subjects = 3;
+}
+
+message SubjectConfig {
+  string name = 1;
+}

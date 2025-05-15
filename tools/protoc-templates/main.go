@@ -15,6 +15,9 @@ import (
 	"google.golang.org/protobuf/types/pluginpb"
 
 	_ "proto/aip"
+	_ "proto/codegen/admin_api"
+	_ "proto/codegen/aip"
+	_ "proto/codegen/model"
 )
 
 var (

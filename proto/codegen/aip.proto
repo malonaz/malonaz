@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package codegen.aip.v1;
+
+import "google/protobuf/descriptor.proto";
+import "proto/nats.proto";
+
+extend google.protobuf.EnumValueOptions {
+  ViewOpts view = 23111;
+}
+
+extend google.protobuf.MethodOptions {
+  CreateOpts create = 98331;
+  UpdateOpts update = 98332;
+  DeleteOpts delete = 98333;
+  GetOpts get = 98334;
+  ListOpts list = 98335;
+}
+
+message CreateOpts {
+  // If true, we generate the create method.
+  bool generate = 1;
+  // The uuid namespace of this request.
+  string uuid_namespace = 2;
+  // If true, we expect a post insert function.
+  bool pre_fn = 3;
+  // If true, we expect a post insert function.
+  bool post_fn = 4;
+  // Some resource, such as the User resource use a different field than 'user_id'.
+  string user_id_field = 5;
+  // If true, we attempt to publish a 'ResourceCreatedEvent'.
+  nats.v1.Subject emit_event = 6;
+}
+
+message UpdateOpts {
+  // If true, we generate the update method.
+  bool generate = 1;
+  // If true, we expect a post insert function.
+  bool pre_fn = 2;
+  // If true, we expect a post insert function.
+  bool post_fn = 3;
+  // If true, we expect a catch error function.
+  bool catch_error = 4;
+  // Some resource, such as the User resource use a different field than 'user_id'.
+  string user_id_field = 5;
+  // If true, we attempt to publish a 'ResourceCreatedEvent'.
+  nats.v1.Subject emit_event = 6;
+}
+
+message DeleteOpts {
+  // If true, we generate the delete method.
+  bool generate = 1;
+  // If true, we expect a pre delete function.
+  bool pre_fn = 2;
+  // If true, we attempt to publish a 'ResourceCreatedEvent'.
+  nats.v1.Subject emit_event = 3;
+}
+
+message GetOpts {
+  // If true, we generate the get method.
+  bool generate = 1;
+  // Can override the search field. (default 'id').
+  string field_name = 2;
+}
+
+message ListOpts {
+  // If true, we generate the create method.
+  bool generate = 1;
+  // If true we do not namespace the search by user id.
+  bool ignore_user_namespace = 2;
+  // Some resource, such as the User resource use a different field than 'user_id'.
+  string user_id_field = 3;
+  // If true, we expect a pre list function.
+  bool pre_fn = 4;
+  // If true, we expect a post list function.
+  bool post_fn = 5;
+}
+
+message ViewOpts {
+  // If true, this is the update view.
+  bool update_view = 1;
+  // The fields you wish to exclude.
+  repeated string exclude = 2;
+}

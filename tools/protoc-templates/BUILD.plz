@@ -8,7 +8,10 @@ go_binary(
     resources = ["templates"],
     visibility = ["//..."],
     deps = [
-        "//proto/aip",
+        "//proto:aip",
+        "//proto/codegen:admin_api",
+        "//proto/codegen:aip",
+        "//proto/codegen:model",
         "//third_party/go:github.com__Masterminds__sprig__v3",
         "//third_party/go:google.golang.org__protobuf__compiler__protogen",
         "//third_party/go:google.golang.org__protobuf__proto",

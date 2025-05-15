@@ -1,4 +1,4 @@
-module github.com/malonaz/misc-rules
+module github.com/malonaz/please-rules
 
 go 1.24.1
 
