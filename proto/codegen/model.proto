@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+option go_package = "malonaz/codegen/model";
+
 package codegen.model.v1;
 
 import "google/protobuf/descriptor.proto";
