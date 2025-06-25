@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-option go_package = "github.com/malonaz/please-rules/codegen/model";
-
 package malonaz.codegen.model.v1;
 
 import "google/protobuf/descriptor.proto";
+
+option go_package = "github.com/malonaz/please-rules/codegen/model";
 
 extend google.protobuf.MessageOptions {
   ModelOpts model_opts = 8810;

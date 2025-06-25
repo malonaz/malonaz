@@ -11,3 +11,8 @@ proto_build_defs(
     },
     visibility = ["PUBLIC"],
 )
+
+filegroup(
+    name = "utils",
+    srcs = ["utils.build_defs"],
+)
