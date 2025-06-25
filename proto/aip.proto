@@ -1,9 +1,11 @@
 syntax = "proto3";
 
-package aip.v1;
+package malonaz.aip.v1;
 
 import "google/api/expr/v1alpha1/checked.proto";
 import "google/protobuf/descriptor.proto";
+
+option go_package = "github.com/malonaz/malonaz/aip";
 
 extend google.protobuf.MessageOptions {
   ListOptions list = 92000;
