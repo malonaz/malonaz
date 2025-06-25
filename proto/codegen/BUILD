@@ -13,7 +13,4 @@ proto_library(
 proto_library(
     name = "aip",
     srcs = ["aip.proto"],
-    deps = [
-        "//proto:nats",
-    ],
 )

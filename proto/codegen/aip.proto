@@ -1,9 +1,10 @@
 syntax = "proto3";
 
-package codegen.aip.v1;
+option go_package = "github.com/malonaz/please-rules/codegen/aip";
+
+package malonaz.codegen.aip.v1;
 
 import "google/protobuf/descriptor.proto";
-import "proto/nats.proto";
 
 extend google.protobuf.EnumValueOptions {
   ViewOpts view = 23111;
@@ -29,7 +30,7 @@ message CreateOpts {
   // Some resource, such as the User resource use a different field than 'user_id'.
   string user_id_field = 5;
   // If true, we attempt to publish a 'ResourceCreatedEvent'.
-  nats.v1.Subject emit_event = 6;
+  string event = 6;
 }
 
 message UpdateOpts {
@@ -44,7 +45,7 @@ message UpdateOpts {
   // Some resource, such as the User resource use a different field than 'user_id'.
   string user_id_field = 5;
   // If true, we attempt to publish a 'ResourceCreatedEvent'.
-  nats.v1.Subject emit_event = 6;
+  string event = 6;
 }
 
 message DeleteOpts {
@@ -53,7 +54,7 @@ message DeleteOpts {
   // If true, we expect a pre delete function.
   bool pre_fn = 2;
   // If true, we attempt to publish a 'ResourceCreatedEvent'.
-  nats.v1.Subject emit_event = 3;
+  string event = 3;
 }
 
 message GetOpts {
