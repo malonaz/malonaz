@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package malonaz.codegen.aip.v1;
+package malonaz.codegen.rpc.v1;
 
 import "google/protobuf/descriptor.proto";
 
-option go_package = "github.com/malonaz/malonaz/codegen/aip";
+option go_package = "github.com/malonaz/malonaz/codegen/rpc";
 
 extend google.protobuf.EnumValueOptions {
   ViewOpts view = 23111;

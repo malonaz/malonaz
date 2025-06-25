@@ -11,6 +11,6 @@ proto_library(
 )
 
 proto_library(
-    name = "aip",
-    srcs = ["aip.proto"],
+    name = "rpc",
+    srcs = ["rpc.proto"],
 )

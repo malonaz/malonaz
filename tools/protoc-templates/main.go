@@ -16,8 +16,8 @@ import (
 
 	_ "proto/aip"
 	_ "proto/codegen/admin_api"
-	_ "proto/codegen/aip"
 	_ "proto/codegen/model"
+	_ "proto/codegen/rpc"
 )
 
 var (

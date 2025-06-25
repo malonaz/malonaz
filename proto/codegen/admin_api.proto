@@ -4,6 +4,8 @@ package codegen.admin_api.v1;
 
 import "google/protobuf/descriptor.proto";
 
+option go_package = "github.com/malonaz/malonaz/codegen/admin_api";
+
 extend google.protobuf.ServiceOptions {
   ServiceOpts service_opts = 112211;
 }
