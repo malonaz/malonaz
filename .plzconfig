@@ -23,7 +23,7 @@ LanguageDef = //build_defs/proto:go
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PLUGIN ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [PluginDefinition]
-Name = please_rules
+Name = malonaz
 
 [PluginConfig "protoc_gen_go"]
 ConfigKey = ProtocGenGo

@@ -4,7 +4,7 @@ package malonaz.codegen.aip.v1;
 
 import "google/protobuf/descriptor.proto";
 
-option go_package = "github.com/malonaz/please-rules/codegen/aip";
+option go_package = "github.com/malonaz/malonaz/codegen/aip";
 
 extend google.protobuf.EnumValueOptions {
   ViewOpts view = 23111;

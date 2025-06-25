@@ -62,8 +62,9 @@ def github_proto_srcs(
             repo = repo,
             revision = revision,
         )
+        new_src_name = f"_{name}#{sanitized_filename}_correct_packages"
         new_src = genrule(
-            name = f"_{name}#{sanitized_filename}_correct_packages",
+            name = new_src_name,
             srcs = [src],
             out = join_path(dir, f),
             cmd = "cat $SRCS > $OUT",
@@ -72,4 +73,5 @@ def github_proto_srcs(
     return filegroup(
         name = name,
         srcs=srcs,
+        exported_deps=srcs,
     )
