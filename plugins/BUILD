@@ -19,5 +19,5 @@ plugin_repo(
 plugin_repo(
     name = "proto",
     owner = "malonaz",
-    revision = "b0f1d27feea437c2230a355f02acb7db1bfa8b1a",
+    revision = "f12c8c4444a32c2a40f468ef5ff865f7a6533c26",
 )
