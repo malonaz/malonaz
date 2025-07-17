@@ -146,7 +146,7 @@ def go_grpc_library(name:str, srcs:list, deps:list=[], visibility:list=None, lab
             '--plugin=protoc-gen-grpc-gateway="`which $TOOLS_GRPC_GATEWAY_PLUGIN`"',
             f'--grpc-gateway_opt=paths=source_relative',
         ]
-        tools['GRPC_GATEWAY_PLUGIN'] = [CONFIG.MALONAZ.PROTOC_GEN_GRPC_GATEWAY_GO]
+        tools['grpc_gateway_plugin'] = [CONFIG.MALONAZ.PROTOC_GEN_GRPC_GATEWAY_GO]
 
     protoc = protoc_rule(
         name = name,
