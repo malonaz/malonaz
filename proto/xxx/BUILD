@@ -2,7 +2,7 @@ subinclude("//build_defs:utils")
 
 go_copy(
     name = "pb_model.go",
-    src = "//proto/exp",
+    src = "//proto/exp:model",
 )
 
 go_library(
@@ -12,5 +12,8 @@ go_library(
     ],
     visibility = ["//..."],
     deps = [
+        "//common/go/pbutil",
+        "//common/go/postgres",
+        "//proto/exp:api",
     ],
 )
