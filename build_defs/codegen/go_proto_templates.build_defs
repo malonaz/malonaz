@@ -67,7 +67,7 @@ def go_proto_template_library(
     return protoc_rule(
         name = name,
         srcs = srcs,
-        language = "go_template",
+        language = "go",
         tools = tools,
         protoc_flags = protoc_flags,
         plugin_flags = plugin_flags,
