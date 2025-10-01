@@ -14,9 +14,10 @@ proto_library(
 """
 
 go_proto_template_library(
-    name = "hello",
+    name = "exp",
     srcs = ["api.proto"],
     template = "//build_defs/codegen/templates:model",
+    visibility = ["PUBLIC"],
     deps = [
         "//proto/codegen:model",
     ],

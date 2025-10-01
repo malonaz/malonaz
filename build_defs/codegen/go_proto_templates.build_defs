@@ -64,7 +64,7 @@ def go_proto_template_library(
         f'--templates_opt=paths=source_relative,debug=true,template=$(location {template})',
     ]
 
-    return protoc_rule(
+    protoc = protoc_rule(
         name = name,
         srcs = srcs,
         language = "go",
@@ -77,4 +77,10 @@ def go_proto_template_library(
         deps = deps + [template],
         visibility = visibility,
         pre_build = _go_path_mapping(),
+    )
+
+    return filegroup(
+        name = name,
+        srcs = [protoc],
+        visibility = visibility,
     )

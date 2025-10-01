@@ -19,3 +19,8 @@ filegroup(
     name = "remote",
     srcs = ["remote.build_defs"],
 )
+
+filegroup(
+    name = "utils",
+    srcs = ["utils.build_defs"],
+)
