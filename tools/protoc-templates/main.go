@@ -1,11 +1,9 @@
 package main
 
 import (
-	"embed"
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -26,9 +24,6 @@ var (
 		Template      *string
 		Configuration *string
 	}
-
-	//go:embed ./**/*.tmpl
-	templateFS embed.FS
 )
 
 type Input struct {
@@ -41,12 +36,17 @@ type Input struct {
 func main() {
 	var flags flag.FlagSet
 	opts.Debug = flags.Bool("debug", false, "verbose output")
-	opts.Template = flags.String("template", "", "template to compile")
+	opts.Template = flags.String("template", "", "template file to compile")
 	opts.Configuration = flags.String("configuration", "", "configuration to inject in context")
 	options := protogen.Options{
 		ParamFunc: flags.Set,
 	}
 	options.Run(func(gen *protogen.Plugin) error {
+		*opts.Debug = false
+		if *opts.Template == "" {
+			return fmt.Errorf("template parameter is required")
+		}
+
 		var configuration map[any]any
 		if *opts.Configuration != "" {
 			configData, err := os.ReadFile(*opts.Configuration)
@@ -59,46 +59,50 @@ func main() {
 			}
 		}
 
-		templateFilepaths, err := templateFilepaths()
+		// Read template content (but don't parse yet)
+		templateContent, err := readTemplateContent(*opts.Template)
 		if err != nil {
-			return fmt.Errorf("parsing template filenames: %w", err)
+			return fmt.Errorf("reading template %s: %w", *opts.Template, err)
 		}
 
-		for _, templateFilepath := range templateFilepaths {
-			templateFilename := filepath.Base(templateFilepath)
-			templateFilenameWithoutExtension := strings.TrimSuffix(templateFilename, filepath.Ext(templateFilepath))
-			if *opts.Template != templateFilenameWithoutExtension {
+		// Get template name for output filename
+		templateFilename := filepath.Base(*opts.Template)
+		templateFilenameWithoutExtension := strings.TrimSuffix(templateFilename, filepath.Ext(templateFilename))
+
+		// Let's grab other files.
+		otherFiles := []*protogen.File{}
+		for _, f := range gen.Files {
+			if !f.Generate {
+				otherFiles = append(otherFiles, f)
+			}
+		}
+
+		for _, f := range gen.Files {
+			if !f.Generate {
 				continue
 			}
-			// Let's grab other files.
-			otherFiles := []*protogen.File{}
-			for _, f := range gen.Files {
-				if !f.Generate {
-					otherFiles = append(otherFiles, f)
-				}
+			generatedFilename := fmt.Sprintf(
+				"%s_%s.pb.go", f.GeneratedFilenamePrefix, templateFilenameWithoutExtension,
+			)
+			generatedFile := gen.NewGeneratedFile(generatedFilename, "")
+			scopedExecution := newScopedExecution(generatedFile)
+
+			// Create template with custom functions first, then parse
+			tmpl, err := template.New(templateFilename).
+				Funcs(scopedExecution.FuncMap()).
+				Parse(templateContent)
+			if err != nil {
+				return fmt.Errorf("parsing template with functions: %w", err)
 			}
 
-			for _, f := range gen.Files {
-				if !f.Generate {
-					continue
-				}
-				generatedFilename := fmt.Sprintf(
-					"%s_%s.pb.go", f.GeneratedFilenamePrefix, templateFilenameWithoutExtension,
-				)
-				generatedFile := gen.NewGeneratedFile(generatedFilename, "")
-				scopedExecution := newScopedExecution(generatedFile)
-				template := template.Must(
-					template.New(templateFilename).Funcs(scopedExecution.FuncMap()).ParseFS(templateFS, templateFilepath),
-				)
-				input := &Input{
-					File:          f,
-					Files:         otherFiles,
-					GeneratedFile: generatedFile,
-					Configuration: configuration,
-				}
-				if err := template.Execute(generatedFile, input); err != nil {
-					return fmt.Errorf("executing template: %w", err)
-				}
+			input := &Input{
+				File:          f,
+				Files:         otherFiles,
+				GeneratedFile: generatedFile,
+				Configuration: configuration,
+			}
+			if err := tmpl.Execute(generatedFile, input); err != nil {
+				return fmt.Errorf("executing template: %w", err)
 			}
 		}
 		gen.SupportedFeatures = uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
@@ -106,20 +110,17 @@ func main() {
 	})
 }
 
-func templateFilepaths() ([]string, error) {
-	filepaths := []string{}
-	err := fs.WalkDir(templateFS, "templates", func(path string, info fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() {
-			return nil
-		}
-		if filepath.Ext(path) != ".tmpl" {
-			return nil
-		}
-		filepaths = append(filepaths, path)
-		return nil
-	})
-	return filepaths, err
+func readTemplateContent(templatePath string) (string, error) {
+	// Check if file exists
+	if _, err := os.Stat(templatePath); os.IsNotExist(err) {
+		return "", fmt.Errorf("template file does not exist: %s", templatePath)
+	}
+
+	// Read the template content from the file system
+	templateContent, err := os.ReadFile(templatePath)
+	if err != nil {
+		return "", fmt.Errorf("reading template file: %w", err)
+	}
+
+	return string(templateContent), nil
 }

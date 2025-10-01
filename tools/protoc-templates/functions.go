@@ -89,7 +89,6 @@ func (se *scopedExecution) qualifiedGoIdent(ident protogen.GoIdent) string {
 }
 
 func (se *scopedExecution) fqn(importPath, name string) string {
-	fmt.Println(name)
 	return se.generatedFile.QualifiedGoIdent(protogen.GoIdent{
 		GoName:       name,
 		GoImportPath: protogen.GoImportPath(importPath),

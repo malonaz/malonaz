@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package user.v1;
+
+import "proto/codegen/model.proto";
+
+// Represents a user.
+message User {
+  option (malonaz.codegen.model.v1.model_opts) = {
+    generate: true,
+    soft_deletable: true,
+    table_name: "user_"
+  };
+
+  // OUTPUT-ONLY FIELDS.
+  // A unique identifier for this account.
+  string id = 1;
+  string email_address = 2;
+  // Username of this user.
+  string username = 3 [(malonaz.codegen.model.v1.field_opts).nullable = true];
+  // fingerprint of the user.
+  string fingerprint = 4 [(malonaz.codegen.model.v1.field_opts).nullable = true];
+
+  // Time at which a user was created.
+  int64 create_timestamp = 5;
+  // Time at which a user was created.
+  int64 update_timestamp = 6;
+  // Time at which a user was created.
+  int64 delete_timestamp = 7 [(malonaz.codegen.model.v1.field_opts).nullable = true];
+  // Indicates whether this user is frozen (cannot spend).
+  int64 freeze_timestamp = 8 [(malonaz.codegen.model.v1.field_opts).nullable = true];
+
+  // Metadata of user.
+  UserMetadata metadata = 9 [(malonaz.codegen.model.v1.field_opts) = {as_json_bytes: true}];
+}
+
+message UserMetadata {
+  // Name of the user.
+  // This field accepts all *letters* (from the unicode class L), and does not tolerate anything else other than a single dash in between.
+  string name = 1;
+  // Firebase id of the user.
+  string firebase_user_id = 2;
+  // The user's preferences.
+  UserPreferences preferences = 3;
+}
+
+message UserPreferences {
+  // Theme chosen by user.
+  string theme_name = 1;
+}

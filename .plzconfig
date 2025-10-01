@@ -49,6 +49,10 @@ DefaultValue = //tools/proto:protoc-gen-cobra
 ConfigKey = ProtocGenGrpcGatewayGo
 DefaultValue = //tools/proto:protoc-gen-grpc-gateway
 
+[PluginConfig "protoc_gen_templates_go"]
+ConfigKey = ProtocGenTemplatesGo
+DefaultValue = //tools/protoc-templates
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ALIASES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [alias "tidy"]
 desc = Tidy generates build targets for dependencies and makes sure that BUILD files are up-to-date.
