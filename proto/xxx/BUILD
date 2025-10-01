@@ -12,8 +12,8 @@ go_library(
     ],
     visibility = ["//..."],
     deps = [
-        "//common/go/pbutil",
-        "//common/go/postgres",
         "//proto/exp:api",
+        "//third_party/go:github.com__malonaz__core__go__pbutil",
+        "//third_party/go:github.com__malonaz__core__go__postgres",
     ],
 )

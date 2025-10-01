@@ -346,23 +346,6 @@ go_module(
 )
 
 go_mod_download(
-    name = "github.com__davecgh__go-spew",
-    _tag = "download",
-    module = "github.com/davecgh/go-spew",
-    version = "v1.1.1",
-    visibility = ["PUBLIC"],
-)
-
-go_module(
-    name = "github.com__davecgh__go-spew__spew",
-    download = ":_github.com__davecgh__go-spew#download",
-    install = ["spew"],
-    module = "github.com/davecgh/go-spew",
-    visibility = ["PUBLIC"],
-    deps = [],
-)
-
-go_mod_download(
     name = "github.com__golang__protobuf",
     _tag = "download",
     module = "github.com/golang/protobuf",
@@ -1001,40 +984,6 @@ go_module(
 )
 
 go_mod_download(
-    name = "github.com__hashicorp__errwrap",
-    _tag = "download",
-    module = "github.com/hashicorp/errwrap",
-    version = "v1.0.0",
-    visibility = ["PUBLIC"],
-)
-
-go_module(
-    name = "github.com__hashicorp__errwrap",
-    download = ":_github.com__hashicorp__errwrap#download",
-    install = ["."],
-    module = "github.com/hashicorp/errwrap",
-    visibility = ["PUBLIC"],
-    deps = [],
-)
-
-go_mod_download(
-    name = "github.com__hashicorp__go-multierror",
-    _tag = "download",
-    module = "github.com/hashicorp/go-multierror",
-    version = "v1.1.1",
-    visibility = ["PUBLIC"],
-)
-
-go_module(
-    name = "github.com__hashicorp__go-multierror",
-    download = ":_github.com__hashicorp__go-multierror#download",
-    install = ["."],
-    module = "github.com/hashicorp/go-multierror",
-    visibility = ["PUBLIC"],
-    deps = [":github.com__hashicorp__errwrap"],
-)
-
-go_mod_download(
     name = "github.com__huandu__xstrings",
     _tag = "download",
     module = "github.com/huandu/xstrings",
@@ -1301,41 +1250,70 @@ go_module(
 )
 
 go_mod_download(
-    name = "github.com__lib__pq",
+    name = "github.com__malonaz__core",
     _tag = "download",
-    module = "github.com/lib/pq",
-    version = "v1.10.9",
+    module = "github.com/malonaz/core",
+    version = "v0.0.0-20251001135716-1cc0a5459ac9",
     visibility = ["PUBLIC"],
 )
 
 go_module(
-    name = "github.com__lib__pq",
-    download = ":_github.com__lib__pq#download",
-    install = ["."],
-    module = "github.com/lib/pq",
+    name = "github.com__malonaz__core__go__contexttag",
+    download = ":_github.com__malonaz__core#download",
+    install = ["go/contexttag"],
+    module = "github.com/malonaz/core",
+    visibility = ["PUBLIC"],
+    deps = [],
+)
+
+go_module(
+    name = "github.com__malonaz__core__go__logging",
+    download = ":_github.com__malonaz__core#download",
+    install = ["go/logging"],
+    module = "github.com/malonaz/core",
     visibility = ["PUBLIC"],
     deps = [
-        ":github.com__lib__pq__oid",
-        ":github.com__lib__pq__scram",
+        ":github.com__joonix__log",
+        ":github.com__malonaz__core__go__contexttag",
+        ":github.com__sirupsen__logrus",
+        ":github.com__sirupsen__logrus__hooks__writer",
     ],
 )
 
 go_module(
-    name = "github.com__lib__pq__oid",
-    download = ":_github.com__lib__pq#download",
-    install = ["oid"],
-    module = "github.com/lib/pq",
+    name = "github.com__malonaz__core__go__pbutil",
+    download = ":_github.com__malonaz__core#download",
+    install = ["go/pbutil"],
+    module = "github.com/malonaz/core",
     visibility = ["PUBLIC"],
-    deps = [],
+    deps = [
+        ":buf.build__go__protovalidate",
+        ":github.com__mennanov__fmutils",
+        ":go.einride.tech__aip__fieldmask",
+        ":google.golang.org__protobuf__encoding__protojson",
+        ":google.golang.org__protobuf__proto",
+        ":google.golang.org__protobuf__reflect__protoreflect",
+        ":google.golang.org__protobuf__reflect__protoregistry",
+        ":google.golang.org__protobuf__runtime__protoimpl",
+        ":google.golang.org__protobuf__types__descriptorpb",
+        ":google.golang.org__protobuf__types__known__anypb",
+        ":google.golang.org__protobuf__types__known__fieldmaskpb",
+    ],
 )
 
 go_module(
-    name = "github.com__lib__pq__scram",
-    download = ":_github.com__lib__pq#download",
-    install = ["scram"],
-    module = "github.com/lib/pq",
+    name = "github.com__malonaz__core__go__postgres",
+    download = ":_github.com__malonaz__core#download",
+    install = ["go/postgres"],
+    module = "github.com/malonaz/core",
     visibility = ["PUBLIC"],
-    deps = [],
+    deps = [
+        ":github.com__jackc__pgerrcode",
+        ":github.com__jackc__pgx__v5",
+        ":github.com__jackc__pgx__v5__pgconn",
+        ":github.com__jackc__pgx__v5__pgxpool",
+        ":github.com__malonaz__core__go__logging",
+    ],
 )
 
 go_mod_download(
@@ -1454,23 +1432,6 @@ go_module(
     download = ":_github.com__please-build__gcfg#download",
     install = ["types"],
     module = "github.com/please-build/gcfg",
-    visibility = ["PUBLIC"],
-    deps = [],
-)
-
-go_mod_download(
-    name = "github.com__pmezard__go-difflib",
-    _tag = "download",
-    module = "github.com/pmezard/go-difflib",
-    version = "v1.0.0",
-    visibility = ["PUBLIC"],
-)
-
-go_module(
-    name = "github.com__pmezard__go-difflib__difflib",
-    download = ":_github.com__pmezard__go-difflib#download",
-    install = ["difflib"],
-    module = "github.com/pmezard/go-difflib",
     visibility = ["PUBLIC"],
     deps = [],
 )
@@ -1601,45 +1562,6 @@ go_module(
     module = "github.com/stoewer/go-strcase",
     visibility = ["PUBLIC"],
     deps = [],
-)
-
-go_mod_download(
-    name = "github.com__stretchr__testify",
-    _tag = "download",
-    module = "github.com/stretchr/testify",
-    version = "v1.11.1",
-    visibility = ["PUBLIC"],
-)
-
-go_module(
-    name = "github.com__stretchr__testify__assert",
-    download = ":_github.com__stretchr__testify#download",
-    install = ["assert"],
-    module = "github.com/stretchr/testify",
-    visibility = ["PUBLIC"],
-    deps = [
-        ":github.com__davecgh__go-spew__spew",
-        ":github.com__pmezard__go-difflib__difflib",
-        ":github.com__stretchr__testify__assert__yaml",
-    ],
-)
-
-go_module(
-    name = "github.com__stretchr__testify__assert__yaml",
-    download = ":_github.com__stretchr__testify#download",
-    install = ["assert/yaml"],
-    module = "github.com/stretchr/testify",
-    visibility = ["PUBLIC"],
-    deps = [":gopkg.in__yaml.v3"],
-)
-
-go_module(
-    name = "github.com__stretchr__testify__require",
-    download = ":_github.com__stretchr__testify#download",
-    install = ["require"],
-    module = "github.com/stretchr/testify",
-    visibility = ["PUBLIC"],
-    deps = [":github.com__stretchr__testify__assert"],
 )
 
 go_mod_download(
@@ -3696,23 +3618,6 @@ go_module(
     download = ":_gopkg.in__warnings.v0#download",
     install = ["."],
     module = "gopkg.in/warnings.v0",
-    visibility = ["PUBLIC"],
-    deps = [],
-)
-
-go_mod_download(
-    name = "gopkg.in__yaml.v2",
-    _tag = "download",
-    module = "gopkg.in/yaml.v2",
-    version = "v2.3.0",
-    visibility = ["PUBLIC"],
-)
-
-go_module(
-    name = "gopkg.in__yaml.v2",
-    download = ":_gopkg.in__yaml.v2#download",
-    install = ["."],
-    module = "gopkg.in/yaml.v2",
     visibility = ["PUBLIC"],
     deps = [],
 )

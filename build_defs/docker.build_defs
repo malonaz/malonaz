@@ -158,7 +158,7 @@ def distroless_go(
 ):
     grpc_health_probe_replace = ''
     if grpc_health_probe:
-        target_name = get_target_name('//common/go/grpc/grpc_health_probe')
+        target_name = get_target_name('//github.com/malonaz/core/go/grpc/grpc_health_probe')
         grpc_health_probe_replace = f'COPY {target_name} {target_name}'
     resources_replace = ''
     for resource in resources:
@@ -176,7 +176,7 @@ def distroless_go(
 
     return docker_image(
         name = name,
-        srcs = [binary, '//common/go/grpc/grpc_health_probe'] + resources,
+        srcs = [binary, '//github.com/malonaz/core/go/grpc/grpc_health_probe'] + resources,
         dockerfile = dockerfile,
         base_image = "//common/docker_containers:go_base",
         visibility = visibility,

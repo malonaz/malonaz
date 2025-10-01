@@ -9,6 +9,8 @@ import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway"
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
+	_ "github.com/malonaz/core/go/pbutil"
+	_ "github.com/malonaz/core/go/postgres"
 	_ "github.com/please-build/gcfg"
 	_ "github.com/scylladb/go-set/strset"
 	_ "github.com/sirupsen/logrus"

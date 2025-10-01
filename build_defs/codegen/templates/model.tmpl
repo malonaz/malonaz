@@ -39,13 +39,13 @@
 	 	    var {{ .GoName -}}Bytes []byte
 	 	    if proto.{{ .GoName }} != nil {
 		    var err error
-			  {{ .GoName -}}Bytes, err = {{ fqn "common/go/pbutil" $marshal }}(proto.{{ .GoName }})
+			  {{ .GoName -}}Bytes, err = {{ fqn "github.com/malonaz/core/go/pbutil" $marshal }}(proto.{{ .GoName }})
 			  if err != nil {
 			 	return nil, {{ fqn "fmt" "Errorf" }}("marshaling {{ .GoName -}}: %w", err)
 			  }
 		    }
     {{ else }}
-	      {{ .GoName -}}Bytes, err := {{ fqn "common/go/pbutil" $marshal }}(proto.{{ .GoName }})
+	      {{ .GoName -}}Bytes, err := {{ fqn "github.com/malonaz/core/go/pbutil" $marshal }}(proto.{{ .GoName }})
 	      if err != nil {
 	 		  return nil, {{ fqn "fmt" "Errorf" }}("marshaling {{ .GoName -}}: %w", err)
 		    }
@@ -62,13 +62,13 @@
 	      var {{ .GoName }} *{{ qualifiedGoIdent .Message.GoIdent }}
 	      if m.{{ .GoName }} != nil {
 	 		  {{- .GoName -}} = &{{- qualifiedGoIdent .Message.GoIdent -}}{}
-	 		  if err := {{ fqn "common/go/pbutil" $marshal }}(m.{{ .GoName -}}, {{- .GoName -}}); err != nil {
+	 		  if err := {{ fqn "github.com/malonaz/core/go/pbutil" $marshal }}(m.{{ .GoName -}}, {{- .GoName -}}); err != nil {
 	 			return nil, {{ fqn "fmt" "Errorf" }}("marshaling {{ .GoName -}}: %w", err)
 	 		  }
 	      }
     {{ else }}
 	      {{- .GoName -}} := &{{- qualifiedGoIdent .Message.GoIdent -}}{}
-	      if err := {{ fqn "common/go/pbutil" $marshal }}(m.{{ .GoName -}}, {{- .GoName -}}); err != nil {
+	      if err := {{ fqn "github.com/malonaz/core/go/pbutil" $marshal }}(m.{{ .GoName -}}, {{- .GoName -}}); err != nil {
 	 		  return nil, {{ fqn "fmt" "Errorf" }}("marshaling {{ .GoName -}}: %w", err)
 	      }
     {{ end }}
@@ -83,7 +83,7 @@ package {{ $file.GoPackageName }}
     {{-  $modelOpts := (getExt .Desc "malonaz.codegen.model.v1.model_opts") -}}
     {{- if not $modelOpts.Generate -}}{{ continue }}{{- end -}}
     {{ "\n" }}
-		var {{ $message.GoIdent.GoName }}Columns = {{ fqn "common/go/postgres" "GetDBColumns" }}({{ $message.GoIdent.GoName }}{})
+		var {{ $message.GoIdent.GoName }}Columns = {{ fqn "github.com/malonaz/core/go/postgres" "GetDBColumns" }}({{ $message.GoIdent.GoName }}{})
 {{- end -}}
 
 

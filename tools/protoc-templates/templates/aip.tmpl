@@ -47,13 +47,13 @@ type _ pb.{{ (index $file.Messages 0).GoIdent.GoName }}
             {{- $resourceGoName := $resource.GoIdent.GoName }}
             {{- if $createOpts.UuidNamespace }}
                 {{ if not ($method.Input.Desc.Fields.ByName "request_id") -}}{{ fail "request_id field is not defined" }}{{ end }}
-                var uuidNamespace{{ $resourceGoName }} = {{ fqn "common/go/uuid" "MustParse" }}("{{ $createOpts.UuidNamespace }}")
+                var uuidNamespace{{ $resourceGoName }} = {{ fqn "github.com/malonaz/core/go/uuid" "MustParse" }}("{{ $createOpts.UuidNamespace }}")
             {{- end }}
             // {{ printf "Create%s creates a %s" $resourceGoName $resourceGoName }}
             func (s *Service) {{ $method.GoName }}(ctx {{ fqn "context" "Context" }}, request *pb.{{ $method.Input.GoIdent.GoName }}) (*{{ qualifiedGoIdent $method.Output.GoIdent }}, error) {
             {{- if $createOpts.UuidNamespace }}
                 // Set the id.
-                request.{{ $resourceGoName }}.Id = {{ fqn "common/go/uuid" "MustNewV5" }}(uuidNamespace{{ $resourceGoName }}, request.RequestId).String()
+                request.{{ $resourceGoName }}.Id = {{ fqn "github.com/malonaz/core/go/uuid" "MustNewV5" }}(uuidNamespace{{ $resourceGoName }}, request.RequestId).String()
             {{- end }}
 
             {{/* Name space by user if necessary */}}
@@ -152,7 +152,7 @@ type _ pb.{{ (index $file.Messages 0).GoIdent.GoName }}
                 {{- end }}
             {{- end -}}
 
-            var update{{ $resourceGoName }}RequestParser = {{ fqn "common/go/aip" "NewUpdateRequestParser" }}(&pb.Update{{ $resourceGoName }}Request{})
+            var update{{ $resourceGoName }}RequestParser = {{ fqn "github.com/malonaz/core/go/aip" "NewUpdateRequestParser" }}(&pb.Update{{ $resourceGoName }}Request{})
 
             {{/* Wrapping function for error checks. */}}
             func (s *Service) {{ $method.GoName }}(ctx {{ fqn "context" "Context" }}, request *pb.{{ $method.Input.GoIdent.GoName }}) (*{{ qualifiedGoIdent $method.Output.GoIdent }}, error) {
@@ -374,13 +374,13 @@ type _ pb.{{ (index $file.Messages 0).GoIdent.GoName }}
                 {{- range $i := untilStep 1 $enumValues.Len 1 }}
                     {{- $enumValueFd :=  $enumValues.Get $i -}}
                     {{- $viewOpts :=  getExt $enumValueFd "codegen.aip.v1.view" }}
-                    {{ $enumValueFd.Name | toString | camelcase | untitle }} = {{ fqn "common/go/postgres" "GetDBColumns" }}(model.{{ $resource.GoIdent.GoName }}{}, {{ range $viewOpts.Exclude }}"{{ . }}",{{ end }})
+                    {{ $enumValueFd.Name | toString | camelcase | untitle }} = {{ fqn "github.com/malonaz/core/go/postgres" "GetDBColumns" }}(model.{{ $resource.GoIdent.GoName }}{}, {{ range $viewOpts.Exclude }}"{{ . }}",{{ end }})
                 {{ end -}}
                 )
             {{- end }}
 
 
-            var {{ $method.Input.GoIdent.GoName | untitle }}Parser = {{ fqn "common/go/aip" "NewListRequestParser" }}(&pb.{{ $method.Input.GoIdent.GoName }}{})
+            var {{ $method.Input.GoIdent.GoName | untitle }}Parser = {{ fqn "github.com/malonaz/core/go/aip" "NewListRequestParser" }}(&pb.{{ $method.Input.GoIdent.GoName }}{})
 
             func (s *Service) {{ $method.GoName }}(ctx {{ fqn "context" "Context" }}, request *pb.{{ $method.Input.GoIdent.GoName }}) (*{{ qualifiedGoIdent $method.Output.GoIdent }}, error) {
             {{ if $listOpts.PreFn -}}
