@@ -24,6 +24,7 @@ var opts struct {
 	DataFormat string   `long:"data-format" description:"The data format to use (json or yaml)" default:"json"`
 	Output     string   `long:"output" short:"o" description:"The output file to create" required:"true"`
 	Delims     string   `long:"delims" description:"Template delimiters format (e.g., '[[.]]' or '{{.}}')" default:"{{.}}"`
+	ExtraData  []string `long:"extra-data" description:"Extra data to pass in the format: key:value"`
 }
 
 func parseDelims(format string) (left, right string, err error) {
@@ -106,6 +107,19 @@ func main() {
 		default:
 			log.Fatalf("unknown data format: %s", opts.DataFormat)
 		}
+	}
+
+	// Process additional data.
+	extraData := map[string]string{}
+	if len(opts.ExtraData) > 0 {
+		data["extra"] = extraData
+	}
+	for _, extra := range opts.ExtraData {
+		split := strings.Split(extra, ":")
+		if len(split) != 2 {
+			log.Fatalf("invalid extra data: %s", extra)
+		}
+		extraData[split[0]] = split[1]
 	}
 
 	// Execute the template with the data
