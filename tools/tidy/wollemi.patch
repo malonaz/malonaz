@@ -25,7 +25,7 @@ index d9bce4d..dbfec3e 100644
  		dir.Build = build
  	}
 diff --git a/domain/wollemi/service_format.go b/domain/wollemi/service_format.go
-index 331b925..34c02b6 100644
+index 331b925..5012250 100644
 --- a/domain/wollemi/service_format.go
 +++ b/domain/wollemi/service_format.go
 @@ -52,7 +52,7 @@ type goFormat struct {
@@ -37,7 +37,7 @@ index 331b925..34c02b6 100644
  	genfiles map[string]string
  }
  
-@@ -316,8 +316,9 @@ func (this *Service) parsePaths() error {
+@@ -316,9 +316,11 @@ func (this *Service) parsePaths() error {
  					case kind != "go_test":
  						this.goFormat.internal[filepath.Join(this.gopkg, path)] = "//" + target
  
@@ -47,9 +47,11 @@ index 331b925..34c02b6 100644
 +							filename := strings.ReplaceAll(formatting, "{{ name }}", path)
 +							this.goFormat.genfiles[filename] = target
  						}
++
  					}
  				}
-@@ -392,7 +393,7 @@ func (this *Service) GoFormat(config wollemi.Config, paths []string) error {
+ 			})
+@@ -392,7 +394,7 @@ func (this *Service) GoFormat(config wollemi.Config, paths []string) error {
  	this.goFormat = newGoFormat(this.normalizePaths(paths))
  	defer this.goFormat.resolveLimiter.Close()
  
@@ -58,7 +60,23 @@ index 331b925..34c02b6 100644
  
  	log := this.log.WithField("rewrite", this.config.Gofmt.GetRewrite())
  
-@@ -504,6 +505,7 @@ func (this *Service) formatDir(log logging.Logger, dir *Directory) {
+@@ -433,8 +435,14 @@ func (this *Service) getRuleDeps(files []string, config wollemi.Config, dir *Dir
+ 		}
+ 
+ 		for _, path := range imports {
+-			if this.goFormat.isGoroot[path] {
++			if goroot, ok := this.goFormat.isGoroot[path]; ok && goroot {
+ 				continue
++			} else if !ok {
++				goroot = this.golang.IsGoroot(path)
++				this.goFormat.isGoroot[path] = goroot
++				if goroot {
++					continue
++				}
+ 			}
+ 
+ 			targetPath := this.getTarget(config, path, false)
+@@ -504,6 +512,7 @@ func (this *Service) formatDir(log logging.Logger, dir *Directory) {
  		return
  	}
  
@@ -66,7 +84,7 @@ index 331b925..34c02b6 100644
  	config := this.filesystem.Config(dir.Path).Merge(this.config)
  
  	log.WithFields(logging.Fields{
-@@ -526,7 +528,7 @@ func (this *Service) formatDir(log logging.Logger, dir *Directory) {
+@@ -526,7 +535,7 @@ func (this *Service) formatDir(log logging.Logger, dir *Directory) {
  			managed = append(managed, rule)
  		}
  
@@ -75,7 +93,7 @@ index 331b925..34c02b6 100644
  	})
  
  	sortManagedRules(config, managed)
-@@ -632,7 +634,7 @@ ManageRules:
+@@ -632,7 +641,7 @@ ManageRules:
  				log.WithField("reason", "no source files").Warn("removed")
  
  				rule.DelAttr("srcs")
@@ -84,7 +102,7 @@ index 331b925..34c02b6 100644
  
  				dir.Build.DelRule(rule.Name())
  
-@@ -728,7 +730,7 @@ ManageRules:
+@@ -728,7 +737,7 @@ ManageRules:
  
  			log.Debug("managed")
  
@@ -93,7 +111,7 @@ index 331b925..34c02b6 100644
  		}
  
  		break
-@@ -890,7 +892,7 @@ CreateRules:
+@@ -890,7 +899,7 @@ CreateRules:
  			rule.SetAttr("deps", please.Strings(resolved...))
  		}
  
@@ -102,7 +120,7 @@ index 331b925..34c02b6 100644
  
  		dir.Build.SetRule(rule)
  
-@@ -917,7 +919,7 @@ CreateRules:
+@@ -917,7 +926,7 @@ CreateRules:
  	}
  }
  
@@ -111,7 +129,7 @@ index 331b925..34c02b6 100644
  	var srcFiles []string
  
  	switch expr := expr.(type) {
-@@ -931,7 +933,7 @@ func getSrcFilesFromExpr(expr please.Expr, dir *Directory) []string {
+@@ -931,7 +940,7 @@ func getSrcFilesFromExpr(expr please.Expr, dir *Directory) []string {
  					if target.Path == "" || target.Path == dir.Path {
  						rule := dir.Build.GetRule(target.Name)
  						if rule != nil {
@@ -120,7 +138,7 @@ index 331b925..34c02b6 100644
  						}
  					}
  				} else {
-@@ -941,8 +943,8 @@ func getSrcFilesFromExpr(expr please.Expr, dir *Directory) []string {
+@@ -941,8 +950,8 @@ func getSrcFilesFromExpr(expr please.Expr, dir *Directory) []string {
  		}
  	case *please.BinaryExpr:
  		if expr.Op == "+" {
@@ -131,7 +149,7 @@ index 331b925..34c02b6 100644
  		}
  	case *please.CallExpr:
  		var kind string
-@@ -953,13 +955,16 @@ func getSrcFilesFromExpr(expr please.Expr, dir *Directory) []string {
+@@ -953,13 +962,16 @@ func getSrcFilesFromExpr(expr please.Expr, dir *Directory) []string {
  		}
  
  		switch kind {
@@ -153,7 +171,7 @@ index 331b925..34c02b6 100644
  		case "glob":
  			var include []string
  			var exclude []string
-@@ -1011,7 +1016,7 @@ func getSrcFilesFromExpr(expr please.Expr, dir *Directory) []string {
+@@ -1011,7 +1023,7 @@ func getSrcFilesFromExpr(expr please.Expr, dir *Directory) []string {
  			}
  		case "filegroup":
  			srcs := please.Attr(expr, "srcs")
@@ -162,7 +180,7 @@ index 331b925..34c02b6 100644
  		}
  	}
  
-@@ -1143,15 +1148,14 @@ func (fc *fileConsumer) GetRule(files ...string) please.Rule {
+@@ -1143,15 +1155,14 @@ func (fc *fileConsumer) GetRule(files ...string) please.Rule {
  	return rule
  }
  
@@ -180,7 +198,7 @@ index 331b925..34c02b6 100644
  	for i := 0; i < len(files); i++ {
  		name := files[i]
  
-@@ -1164,15 +1168,17 @@ func (fc *fileConsumer) Update(rule please.Rule) {
+@@ -1164,15 +1175,17 @@ func (fc *fileConsumer) Update(rule please.Rule) {
  		// Ignore please rule targets
  		default:
  			if _, ok := fc.Dir.Files[name]; !ok {
