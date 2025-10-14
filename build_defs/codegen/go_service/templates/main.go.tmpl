@@ -2,10 +2,10 @@ package main
 
 import (
 "context"
-"common/go/logging"
-"common/go/prometheus"
-"common/go/flags"
-"common/go/health"
+"github.com/malonaz/core/go/logging"
+"github.com/malonaz/core/go/prometheus"
+"github.com/malonaz/core/go/flags"
+"github.com/malonaz/core/go/health"
 "math/rand"
 "time"
 {{- if not .grpc.servers }}
@@ -36,16 +36,16 @@ import (
 {{- if or .grpc.servers .grpc.clients }}
 	  {{- "\n" }}
 	  // gRPC common imports.
-	  "common/go/grpc"
-	  "common/go/certs"
+	  "github.com/malonaz/core/go/grpc"
+	  "github.com/malonaz/core/go/certs"
 {{- end }}
 {{- if .postgres }}
 	  // Postgres imports.
-	  "common/go/postgres"
+	  "github.com/malonaz/core/go/postgres"
 {{- end }}
 {{- if or .nats }}
 	  // Nats import.
- 	  "common/go/nats"
+ 	  "github.com/malonaz/core/go/nats"
 {{- end }}
 {{- if or .nats.publishers .nats.consumers }}
 	  // Nats import.
@@ -59,11 +59,11 @@ import (
 
 {{- if .openAI }}
 	  // llm imports.
-	  "common/go/llm/openai"
+	  "github.com/malonaz/core/go/llm/openai"
 {{- end }}
 
 {{-  if .grpc.servers }}
-    "common/go/permission"
+    "github.com/malonaz/core/go/permission"
 {{ end }}
 {{- if .grpc.servers }}
 	  {{- "\n" }}
@@ -82,7 +82,7 @@ import (
 {{- end }}
 
 "admin/admin_api/authentication"
-"common/go/contexttag"
+"github.com/malonaz/core/go/contexttag"
 )
 
 {{- $hasAdminAPIClient := false -}}
