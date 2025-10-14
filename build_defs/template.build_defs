@@ -15,6 +15,31 @@ def templated_text_file(filename:str, content:str, replace={}, deps=[]):
         deps = deps,
     )
 
+def text_template(
+        name:str,
+        src:str,
+        visibility:list=[],
+        delims:str=None,
+):
+    args = [
+        f"--output {name}",
+        f"--template $(location {src})",
+    ]
+    if delims:
+        args.append(f"--delims '{delims}'")
+
+    return genrule(
+        name=name,
+        cmd = [
+            f"$TOOLS " + " ".join(args),
+        ],
+        tools = [CONFIG.MALONAZ.TEMPLATES_GO],
+        srcs = [src],
+        outs = [name],
+        labels = ["codegen"],
+        visibility = visibility,
+    )
+
 def go_template(
         name:str,
         templates:list=[],
@@ -23,9 +48,7 @@ def go_template(
         deps:list=[],
         visibility:list=[],
 ):
-    """
-    Use Go's text/template to generate a file.
-    """
+
     templates_arg = ",".join([f"$(location {t})" for t in templates])
     args = [
         f"--output {name}",
@@ -38,7 +61,7 @@ def go_template(
         cmd = [
             f"$TOOLS " + " ".join(args),
         ],
-        tools = ["//tools/template"],
+        tools = [CONFIG.MALONAZ.TEMPLATES_GO],
         deps = deps + templates + [data],
         outs = [name],
         labels = ["codegen"],
@@ -53,9 +76,6 @@ def validated_file(
         exported_deps:list=[],
         visibility:list=[],
 ):
-    """
-    Used to validate a file against a format.
-    """
     return genrule(
         name = name,
         srcs = [src],
@@ -66,6 +86,6 @@ def validated_file(
         ],
         deps = [schema],
         out = name,
-        tools = ["//tools/validate-schema"],
+        tools = [CONFIG.MALONAZ.VALIDATE_SCHEMA],
         visibility=visibility,
     )

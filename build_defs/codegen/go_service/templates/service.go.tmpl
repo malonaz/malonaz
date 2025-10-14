@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"context"
 
-	"common/go/logging"
+	"github.com/malonaz/core/go/logging"
 	{{ if .google.firebase }}"firebase.google.com/go/v4/auth"{{ end }}
-	{{ if .openAI }}"common/go/llm"{{ end }}
+	{{ if .openAI }}"github.com/malonaz/core/go/llm"{{ end }}
 	{{ if .google.storage }}"cloud.google.com/go/storage"{{ end }}
-	{{ if or .nats.publishers .nats.client }}"common/go/nats"{{- end }}
+	{{ if or .nats.publishers .nats.client }}"github.com/malonaz/core/go/nats"{{- end }}
 	{{ if .configuration }}configurationpb "configuration/proto/api"{{ end }}
-	{{ if .postgres.client }}"common/go/postgres"{{ end }}
+	{{ if .postgres.client }}"github.com/malonaz/core/go/postgres"{{ end }}
 	{{- if .postgres.db.implementation }}
 	{{ template "goImport" (dict "Target" .postgres.db.implementation) }}
 	{{- end }}

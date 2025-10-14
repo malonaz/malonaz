@@ -1,12 +1,13 @@
-subinclude("//infrastructure/build_defs:distroless")
-subinclude("//infrastructure/build_defs:k8s")
+subinclude("//build_defs:template")
+subinclude("//build_defs:docker")
+subinclude("//build_defs:k8s")
 
 def go_manifest(
         name:str,
         manifest:str="manifest.yaml",
         proto_rules:list=[],
         visibility:list=[],
-        schema:str="//infrastructure/build_defs/service/go:service_manifest.schema",
+        schema:str="///malonaz//build_defs/codegen/go_service/templates:service_manifest.schema",
 ):
 
     templated_manifest = text_template(
@@ -30,8 +31,8 @@ def go_service_src(
     return go_template(
         name = f"{name}",
         templates = [
-            "//infrastructure/build_defs/service/go:service.go.tmpl",
-            "//infrastructure/build_defs/service/go:utils.go.tmpl",
+            "///malonaz//build_defs/codegen/go_service/templates:service.go.tmpl",
+            "///malonaz//build_defs/codegen/go_service/templates:utils.go.tmpl",
         ],
         data = manifest,
         format = "yaml",
@@ -47,8 +48,8 @@ def go_main_src(
     return go_template(
         name = f"{name}",
         templates = [
-            "//infrastructure/build_defs/service/go:main.go.tmpl",
-            "//infrastructure/build_defs/service/go:utils.go.tmpl",
+            "///malonaz//build_defs/codegen/go_service/templates:main.go.tmpl",
+            "///malonaz//build_defs/codegen/go_service/templates:utils.go.tmpl",
         ],
         data = manifest,
         format = "yaml",
@@ -64,8 +65,8 @@ def go_admin_api_main_src(
     return go_template(
         name = f"{name}",
         templates = [
-            "//infrastructure/build_defs/service/go:admin_api_main.go.tmpl",
-            "//infrastructure/build_defs/service/go:utils.go.tmpl",
+            "///malonaz//build_defs/codegen/go_service/templates:admin_api_main.go.tmpl",
+            "///malonaz//build_defs/codegen/go_service/templates:utils.go.tmpl",
         ],
         data = manifest,
         format = "yaml",
@@ -90,8 +91,8 @@ def go_k8s(
     k8s = go_template(
         name = "k8s_templated.yaml",
         templates = [
-            "//infrastructure/build_defs/service/go:k8s.yaml.tmpl",
-            "//infrastructure/build_defs/service/go:utils.go.tmpl",
+            "///malonaz//build_defs/codegen/go_service/templates:k8s.yaml.tmpl",
+            "///malonaz//build_defs/codegen/go_service/templates:utils.go.tmpl",
         ],
         data = manifest,
         format = "yaml",

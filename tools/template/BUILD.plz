@@ -7,6 +7,8 @@ go_binary(
     visibility = ["//..."],
     deps = [
         "//third_party/go:github.com__Masterminds__sprig__v3",
+        "//third_party/go:github.com__malonaz__core__go__flags",
+        "//third_party/go:github.com__malonaz__core__go__logging",
         "//third_party/go:gopkg.in__yaml.v3",
     ],
 )

@@ -3,47 +3,27 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"flag"
 	"fmt"
-	"log"
 	"os"
 	"strings"
 	"text/template"
 
 	"github.com/Masterminds/sprig/v3"
+	"github.com/malonaz/core/go/flags"
+	"github.com/malonaz/core/go/logging"
 	"gopkg.in/yaml.v3"
 )
 
-type options struct {
-	templates     []string
-	data          string
-	dataFormat    string
-	output        string
-	configuration bool
-	delims        string
-}
+var (
+	log = logging.NewPrettyLogger()
+)
 
-func parseFlags() options {
-	var opts options
-	var templatesList string
-
-	flag.StringVar(&templatesList, "template", "", "The template files to use (comma-separated)")
-	flag.StringVar(&opts.data, "data", "", "The data file to use")
-	flag.StringVar(&opts.dataFormat, "data-format", "json", "The data format to use (json or yaml)")
-	flag.StringVar(&opts.output, "output", "", "The output file to create")
-	flag.StringVar(&opts.delims, "delims", "{{.}}", "Template delimiters format (e.g., '[[.]]' or '{{.}}')")
-
-	flag.Parse()
-
-	if templatesList == "" {
-		log.Fatal("--template is required")
-	}
-	if opts.output == "" {
-		log.Fatal("--output is required")
-	}
-
-	opts.templates = strings.Split(templatesList, ",")
-	return opts
+var opts struct {
+	Templates  []string `long:"template" description:"The template files to use" required:"true"`
+	Data       string   `long:"data" description:"The data file to use"`
+	DataFormat string   `long:"data-format" description:"The data format to use (json or yaml)" default:"json"`
+	Output     string   `long:"output" short:"o" description:"The output file to create" required:"true"`
+	Delims     string   `long:"delims" description:"Template delimiters format (e.g., '[[.]]' or '{{.}}')" default:"{{.}}"`
 }
 
 func parseDelims(format string) (left, right string, err error) {
@@ -60,10 +40,16 @@ func parseDelims(format string) (left, right string, err error) {
 }
 
 func main() {
-	opts := parseFlags()
+	flags.MustParse(&opts)
+	if opts.Output == "" {
+		log.Fatal("--output is required")
+	}
+	if len(opts.Templates) == 0 {
+		log.Fatal("--output is required")
+	}
 
 	// Parse delimiters
-	leftDelim, rightDelim, err := parseDelims(opts.delims)
+	leftDelim, rightDelim, err := parseDelims(opts.Delims)
 	if err != nil {
 		log.Fatalf("invalid delimiter format: %v", err)
 	}
@@ -86,7 +72,7 @@ func main() {
 	}
 	// Parse the template
 	tmpl := template.New("template").Funcs(funcMap).Delims(leftDelim, rightDelim)
-	for _, templatePath := range opts.templates {
+	for _, templatePath := range opts.Templates {
 		bytes, err := os.ReadFile(templatePath)
 		if err != nil {
 			log.Fatalf("reading template file: %v", err)
@@ -99,8 +85,8 @@ func main() {
 
 	// Read the data file
 	data := map[string]any{}
-	if opts.data != "" {
-		dataBytes, err := os.ReadFile(opts.data)
+	if opts.Data != "" {
+		dataBytes, err := os.ReadFile(opts.Data)
 		if err != nil {
 			log.Fatalf("reading data file: %v", err)
 		}
@@ -108,7 +94,7 @@ func main() {
 		fixedDataBytes = bytes.ReplaceAll(fixedDataBytes, []byte("False"), []byte("false"))
 
 		// Unmarshal the data into a map
-		switch opts.dataFormat {
+		switch opts.DataFormat {
 		case "json":
 			if err := json.Unmarshal(fixedDataBytes, &data); err != nil {
 				log.Fatalf("unmarshaling json data: %v", err)
@@ -118,7 +104,7 @@ func main() {
 				log.Fatalf("unmarshaling yaml data: %v", err)
 			}
 		default:
-			log.Fatalf("unknown data format: %s", opts.dataFormat)
+			log.Fatalf("unknown data format: %s", opts.DataFormat)
 		}
 	}
 
@@ -128,7 +114,7 @@ func main() {
 		log.Fatalf("executing template: %v", err)
 	}
 	// Write the result to the output file
-	if err := os.WriteFile(opts.output, buf.Bytes(), 0644); err != nil {
+	if err := os.WriteFile(opts.Output, buf.Bytes(), 0644); err != nil {
 		log.Fatalf("writing output file: %v", err)
 	}
 	log.Printf("Successfully processed template and data")

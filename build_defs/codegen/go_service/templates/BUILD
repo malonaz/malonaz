@@ -1,11 +1,6 @@
 package(default_visibility = ["PUBLIC"])
 
 export_file(
-    name = "go",
-    src = "build_defs",
-)
-
-export_file(
     name = "utils.go.tmpl",
     src = "utils.go.tmpl",
 )
