@@ -1,0 +1,30 @@
+def go_template(
+        name:str,
+        templates:list=[],
+        data:str=None,
+        format:str="json",
+        deps:list=[],
+        configuration:bool=False,
+        visibility:list=[],
+):
+
+    templates_arg = ",".join([f"$(location {t})" for t in templates])
+    args = [
+        f"--output {name}",
+        f"--data-format {format}",
+    ] + [f"--template $(location {t})" for t in templates]
+    if configuration:
+        args.append("--configuration")
+    if data:
+        args.append(f"--data $(location {data})")
+    return genrule(
+        name=name,
+        cmd = [
+            f"$TOOLS " + " ".join(args),
+        ],
+        tools = [CONFIG.MALONAZ.TEMPLATE],
+        deps = deps + templates + [data],
+        outs = [name],
+        labels = ["codegen"],
+        visibility = visibility,
+    )

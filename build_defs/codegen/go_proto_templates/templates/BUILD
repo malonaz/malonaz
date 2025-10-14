@@ -1,11 +1,11 @@
 package(default_visibility = ["PUBLIC"])
 
-filegroup(
+export_file(
     name = "model",
-    srcs = ["model.tmpl"],
+    src = "model.tmpl",
 )
 
-filegroup(
+export_file(
     name = "db",
-    srcs = ["db.tmpl"],
+    src = "db.tmpl",
 )

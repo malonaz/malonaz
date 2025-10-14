@@ -53,6 +53,14 @@ DefaultValue = //tools/proto:protoc-gen-grpc-gateway
 ConfigKey = ProtocGenTemplatesGo
 DefaultValue = //tools/protoc-templates
 
+[PluginConfig "templates_go"]
+ConfigKey = TemplatesGo
+DefaultValue = //tools/template
+
+[PluginConfig "validate_schema"]
+ConfigKey = ValidateSchema
+DefaultValue = //tools/validate-schema
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ALIASES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [alias "tidy"]
 desc = Tidy generates build targets for dependencies and makes sure that BUILD files are up-to-date.

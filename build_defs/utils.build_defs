@@ -9,3 +9,25 @@ def go_copy(
         out=name,
         requires=["go"],
     )
+
+def file_with_schema(
+        name:str,
+        src:str,
+        schema:str,
+        format:str="json",
+        exported_deps:list=[],
+        visibility:list=[],
+):
+    return genrule(
+        name = name,
+        srcs = [src],
+        exported_deps = exported_deps,
+        cmd = [
+            f"$TOOLS --file $SRCS --format {format} --schema $(location {schema})",
+            "mv $SRCS $OUTS"
+        ],
+        deps = [schema],
+        out = name,
+        tools = [CONFIG.MALONAZ.VALIDATE_SCHEMA],
+        visibility=visibility,
+    )

@@ -8,8 +8,8 @@ go_binary(
     resources = ["templates"],
     visibility = ["//..."],
     deps = [
-        "//proto:aip",
         "//proto/codegen:admin_api",
+        "//proto/codegen:aip",
         "//proto/codegen:model",
         "//proto/codegen:rpc",
         "//third_party/go:github.com__Masterminds__sprig__v3",
