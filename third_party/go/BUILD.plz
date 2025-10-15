@@ -1270,7 +1270,7 @@ go_mod_download(
     name = "github.com__malonaz__core",
     _tag = "download",
     module = "github.com/malonaz/core",
-    version = "v0.0.0-20251015142034-f9b1ba19b3d5",
+    version = "v0.0.0-20251015144659-30a5eb45dcaa",
     visibility = ["PUBLIC"],
 )
 
