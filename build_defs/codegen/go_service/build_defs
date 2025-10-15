@@ -39,14 +39,15 @@ def go_service_runtime_src(
 def go_service_src(
         name:str,
         manifest:str,
+        templates:list=[],
         visibility:list=[],
 ):
+    if len(templates) == 0:
+        templates = ["///malonaz//build_defs/codegen/go_service/templates:service.go.tmpl"]
+    templates.append("///malonaz//build_defs/codegen/go_service/templates:utils.go.tmpl")
     return go_template(
         name = f"{name}",
-        templates = [
-            "///malonaz//build_defs/codegen/go_service/templates:service.go.tmpl",
-            "///malonaz//build_defs/codegen/go_service/templates:utils.go.tmpl",
-        ],
+        templates = templates,
         data = manifest,
         format = "yaml",
         visibility = visibility,
@@ -56,8 +57,8 @@ def go_service_src(
 def go_main_src(
         name:str,
         manifest:str,
-        visibility:list=[],
         templates:list=[],
+        visibility:list=[],
 ):
     if len(templates) == 0:
         templates = ["///malonaz//build_defs/codegen/go_service/templates:main.go.tmpl"]

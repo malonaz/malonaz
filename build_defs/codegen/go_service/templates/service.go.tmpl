@@ -20,6 +20,9 @@ import (
 )
 
 type Service struct {
+ {{ range $grpcServer := .grpc.servers }}
+    Unimplemented{{ grpcSvcName $grpcServer}}Server
+ {{ end }}
 	opts *Opts
 	ctxAdmin context.Context
 	{{ if .configuration }}configuration *configurationpb.Configuration{{ end }}
