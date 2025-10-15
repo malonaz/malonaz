@@ -1270,8 +1270,61 @@ go_mod_download(
     name = "github.com__malonaz__core",
     _tag = "download",
     module = "github.com/malonaz/core",
-    version = "v0.0.0-20251014103622-b7898dc8a820",
+    version = "v0.0.0-20251015142034-f9b1ba19b3d5",
     visibility = ["PUBLIC"],
+)
+
+go_module(
+    name = "github.com__malonaz__core__genproto__codegen__admin_api",
+    download = ":_github.com__malonaz__core#download",
+    install = ["genproto/codegen/admin_api"],
+    module = "github.com/malonaz/core",
+    visibility = ["PUBLIC"],
+    deps = [
+        ":google.golang.org__protobuf__reflect__protoreflect",
+        ":google.golang.org__protobuf__runtime__protoimpl",
+        ":google.golang.org__protobuf__types__descriptorpb",
+    ],
+)
+
+go_module(
+    name = "github.com__malonaz__core__genproto__codegen__aip",
+    download = ":_github.com__malonaz__core#download",
+    install = ["genproto/codegen/aip"],
+    module = "github.com/malonaz/core",
+    visibility = ["PUBLIC"],
+    deps = [
+        ":google.golang.org__genproto__googleapis__api__expr__v1alpha1",
+        ":google.golang.org__protobuf__reflect__protoreflect",
+        ":google.golang.org__protobuf__runtime__protoimpl",
+        ":google.golang.org__protobuf__types__descriptorpb",
+    ],
+)
+
+go_module(
+    name = "github.com__malonaz__core__genproto__codegen__model",
+    download = ":_github.com__malonaz__core#download",
+    install = ["genproto/codegen/model"],
+    module = "github.com/malonaz/core",
+    visibility = ["PUBLIC"],
+    deps = [
+        ":google.golang.org__protobuf__reflect__protoreflect",
+        ":google.golang.org__protobuf__runtime__protoimpl",
+        ":google.golang.org__protobuf__types__descriptorpb",
+    ],
+)
+
+go_module(
+    name = "github.com__malonaz__core__genproto__codegen__rpc",
+    download = ":_github.com__malonaz__core#download",
+    install = ["genproto/codegen/rpc"],
+    module = "github.com/malonaz/core",
+    visibility = ["PUBLIC"],
+    deps = [
+        ":google.golang.org__protobuf__reflect__protoreflect",
+        ":google.golang.org__protobuf__runtime__protoimpl",
+        ":google.golang.org__protobuf__types__descriptorpb",
+    ],
 )
 
 go_module(
@@ -1669,7 +1722,7 @@ go_mod_download(
     name = "golang.org__x__crypto",
     _tag = "download",
     module = "golang.org/x/crypto",
-    version = "v0.37.0",
+    version = "v0.41.0",
     visibility = ["PUBLIC"],
 )
 
@@ -1730,7 +1783,7 @@ go_mod_download(
     name = "golang.org__x__mod",
     _tag = "download",
     module = "golang.org/x/mod",
-    version = "v0.25.0",
+    version = "v0.26.0",
     visibility = ["PUBLIC"],
 )
 
@@ -1781,7 +1834,7 @@ go_mod_download(
     name = "golang.org__x__net",
     _tag = "download",
     module = "golang.org/x/net",
-    version = "v0.38.0",
+    version = "v0.43.0",
     visibility = ["PUBLIC"],
 )
 
@@ -1864,7 +1917,7 @@ go_mod_download(
     name = "golang.org__x__sync",
     _tag = "download",
     module = "golang.org/x/sync",
-    version = "v0.15.0",
+    version = "v0.16.0",
     visibility = ["PUBLIC"],
 )
 
@@ -1881,7 +1934,7 @@ go_mod_download(
     name = "golang.org__x__sys",
     _tag = "download",
     module = "golang.org/x/sys",
-    version = "v0.32.0",
+    version = "v0.35.0",
     visibility = ["PUBLIC"],
 )
 
@@ -1898,7 +1951,7 @@ go_mod_download(
     name = "golang.org__x__text",
     _tag = "download",
     module = "golang.org/x/text",
-    version = "v0.26.0",
+    version = "v0.28.0",
     visibility = ["PUBLIC"],
 )
 

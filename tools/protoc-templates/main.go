@@ -12,10 +12,10 @@ import (
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/types/pluginpb"
 
-	_ "proto/codegen/admin_api"
-	_ "proto/codegen/aip"
-	_ "proto/codegen/model"
-	_ "proto/codegen/rpc"
+	_ "github.com/malonaz/core/genproto/codegen/admin_api"
+	_ "github.com/malonaz/core/genproto/codegen/aip"
+	_ "github.com/malonaz/core/genproto/codegen/model"
+	_ "github.com/malonaz/core/genproto/codegen/rpc"
 )
 
 var (

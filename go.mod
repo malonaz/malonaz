@@ -10,13 +10,13 @@ require (
 	github.com/NathanBaulch/protoc-gen-cobra v1.2.1
 	github.com/bazelbuild/buildtools v0.0.0-20250306161121-931d76d6a639
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3
-	github.com/malonaz/core v0.0.0-20251014103622-b7898dc8a820
+	github.com/malonaz/core v0.0.0-20251015142034-f9b1ba19b3d5
 	github.com/please-build/gcfg v1.6.0
 	github.com/scylladb/go-set v1.0.2
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.9.1
 	github.com/xeipuuv/gojsonschema v1.2.0
-	golang.org/x/mod v0.25.0
+	golang.org/x/mod v0.26.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250603155806-513f23925822
 	google.golang.org/grpc v1.73.0
 	google.golang.org/protobuf v1.36.10
@@ -54,12 +54,12 @@ require (
 	github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f // indirect
 	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect
 	go.einride.tech/aip v0.73.0 // indirect
-	golang.org/x/crypto v0.37.0 // indirect
+	golang.org/x/crypto v0.41.0 // indirect
 	golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b // indirect
-	golang.org/x/net v0.38.0 // indirect
-	golang.org/x/sync v0.15.0 // indirect
-	golang.org/x/sys v0.32.0 // indirect
-	golang.org/x/text v0.26.0 // indirect
+	golang.org/x/net v0.43.0 // indirect
+	golang.org/x/sync v0.16.0 // indirect
+	golang.org/x/sys v0.35.0 // indirect
+	golang.org/x/text v0.28.0 // indirect
 	google.golang.org/genproto v0.0.0-20240711142825-46eb208f015d // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250603155806-513f23925822 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
