@@ -3030,7 +3030,7 @@ go_mod_download(
     name = "google.golang.org__protobuf",
     _tag = "download",
     module = "google.golang.org/protobuf",
-    version = "v1.36.9",
+    version = "v1.36.10",
     visibility = ["PUBLIC"],
 )
 

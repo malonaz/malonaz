@@ -1,7 +1,7 @@
 # Protoc dependency - referenced in .plzconfig.
 protoc_binary(
     name = "protoc",
-    version = "30.0",
+    version = "32.1",
     visibility = ["PUBLIC"],
 )
 
