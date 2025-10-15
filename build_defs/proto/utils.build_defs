@@ -65,7 +65,7 @@ def external_github_proto_library(
     return filegroup(
         name = name,
         srcs = srcs,
-        exported_deps = [CONFIG.MALONAZ.PROTOC_GEN_GO_DEP] + srcs,
+        exported_deps = srcs,
         provides = {
             "go": go_dep,
             "proto": srcs,
