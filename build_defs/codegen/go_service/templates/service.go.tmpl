@@ -17,12 +17,15 @@ import (
 	{{ range $i, $grpcClient := .grpc.clients }}
 	{{ template "goImport" (dict "Target" $grpcClient "As" (printf "pbclient%d" $i)) }}
 	{{- end }}
+	{{ range $i, $grpcServer := .grpc.servers }}
+	{{ template "goImport" (dict "Target" $grpcServer "As" (printf "pbserver%d" $i)) }}
+	{{- end }}
 )
 
 type Service struct {
- {{ range $grpcServer := .grpc.servers }}
-    Unimplemented{{ grpcSvcName $grpcServer}}Server
- {{ end }}
+	{{ range $i, $grpcServer := .grpc.servers }}
+  {{ printf "pbserver%d" $i }}.Unimplemented{{ grpcSvcName $grpcServer}}Server
+	{{- end }}
 	opts *Opts
 	ctxAdmin context.Context
 	{{ if .configuration }}configuration *configurationpb.Configuration{{ end }}
