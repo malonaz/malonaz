@@ -38,7 +38,7 @@ ConfigKey = ProtocGenGoDep
 DefaultValue = //tools/proto:protoc-gen-go-dep
 
 [PluginConfig "protoc_gen_grpc_go_dep"]
-ConfigKey = GrpcDep
+ConfigKey = ProtocGenGrpcGoDep
 DefaultValue = //tools/proto:protoc-gen-go-grpc-dep
 
 [PluginConfig "protoc_gen_cobra_go"]
