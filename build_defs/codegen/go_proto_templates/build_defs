@@ -74,7 +74,16 @@ def go_proto_template_library(
         labels = labels + _go_mapping_labels(name, srcs, root_dir),
         test_only = test_only,
         root_dir = root_dir,
-        deps = deps + [template],
+        deps = deps + [
+            template,
+            filegroup(
+                name = name,
+                tag = "protoc_wkt",
+                exported_deps = [CONFIG.PROTO.PROTOC_TOOL],
+                test_only = test_only,
+                requires = ["proto"],
+            )
+        ],
         visibility = visibility,
         pre_build = _go_path_mapping(),
     )
