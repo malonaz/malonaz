@@ -6,6 +6,7 @@ import (
 "github.com/malonaz/core/go/prometheus"
 "github.com/malonaz/core/go/flags"
 "github.com/malonaz/core/go/health"
+"github.com/malonaz/core/go/authentication"
 "math/rand"
 "time"
 {{- if not .grpc.servers }}
@@ -81,7 +82,6 @@ import (
 	  {{- end }}
 {{- end }}
 
-"admin/admin_api/authentication"
 "github.com/malonaz/core/go/contexttag"
 )
 
@@ -107,9 +107,6 @@ Prometheus            prometheus.Opts        `group:"Prometheus" namespace:"prom
 	  Setup                 setupOpts
 {{- end }}
 
-{{- if .grpc.interceptors.authentication }}
-    Authentication *authentication.Opts `group:"Authentication" namespace:"authentication"`
-{{- end }}
 {{- if .google.firebase }}
 	  // Google Firebase Opts.
 	  GoogleFirebaseCredentials string `long:"google-firebase-credentials" default:"secrets/firebase/service_account_key.json" description:"Credentials for google"`
@@ -160,11 +157,11 @@ prometheus.Serve(opts.Prometheus)
 ctx := context.Background()
 
 // We always start services using a ctx with admin permissions.
-ctxAdmin, err := authentication.WithAdminRole(ctx)
+ctxWithRole, err := authentication.WithRole(ctx, "{{ .name }}")
 if err != nil {
 log.Panicf("injecting admin role into context: %v", err)
 }
-ctxAdmin = contexttag.SetOntoContextNoop(ctxAdmin)
+ctxWithRole = contexttag.SetOntoContextNoop(ctxWithRole)
 
 {{- if .configuration }}
 	  {{- "\n" }}
@@ -271,7 +268,7 @@ ctxAdmin = contexttag.SetOntoContextNoop(ctxAdmin)
 
 {{- if .setup }}
     {
-	  cleanup, err := setup(ctxAdmin, service)
+	  cleanup, err := setup(ctxWithRole, service)
     if err != nil {
     log.Panicf("setting up: %v", err)
     }
@@ -279,7 +276,7 @@ ctxAdmin = contexttag.SetOntoContextNoop(ctxAdmin)
     }
 {{- end }}
 {{ if .service }}
-    cleanup, err := service.Start(ctxAdmin)
+    cleanup, err := service.Start(ctxWithRole)
     if err != nil {
     log.Panicf("starting service: %v", err)
     }
@@ -305,7 +302,7 @@ health.Serve(opts.Health, healthCheck)
 	  service.{{ ternary (printf "Process%sMessages" ($natsConsumer.subject | camelcase)) $natsConsumer.fn (empty $natsConsumer.fn) }},
 	  )
 	  // Nats consumer run with admin roles.
- 	  if err := natsConsumer{{ $i }}.Start(ctxAdmin); err != nil {
+ 	  if err := natsConsumer{{ $i }}.Start(ctxWithRole); err != nil {
  	 	log.Panicf("starting nats consumer: %v", err)
 	  }
  	  defer natsConsumer{{ $i }}.Close()
@@ -340,7 +337,8 @@ health.Serve(opts.Health, healthCheck)
 	  }
 
     {{ if .grpc.servers }}
-        permissionInterceptor, err := permission.NewInterceptor(
+        authenticationInterceptor, err := authentication.NewInterceptor(
+        []*permissionpb.Role{},
 		    {{- range $grpcServer := .grpc.servers }}
             {{ grpcSvcName $grpcServer | lower }}pb.{{ template "pbFileDescriptor" $grpcServer }},
 		    {{- end }}
@@ -352,13 +350,13 @@ health.Serve(opts.Health, healthCheck)
 
 	  // Start gRPC server.
 	  grpc.NewServer(opts.GRPC, opts.Certs, opts.Prometheus, register).WithHealthCheck(healthCheck).
-    WithPreUnaryInterceptors(authentication.UnarySessionInjectorInterceptor(), permissionInterceptor.Unary()).
-    WithPreStreamInterceptors(authentication.StreamSessionInjectorInterceptor(), permissionInterceptor.Stream()).Serve()
+    WithPreUnaryInterceptors(authentication.UnarySessionInjectorInterceptor(), authenticationInterceptor.Unary()).
+    WithPreStreamInterceptors(authentication.StreamSessionInjectorInterceptor(), authenticationInterceptor.Stream()).Serve()
 	{{- end }}
 
 	{{- if .job }}
 	log.Info("running job")
-	if err := service.Run(ctxAdmin); err != nil {
+	if err := service.Run(ctxWithRole); err != nil {
       log.Panicf("running job: %v", err)
   }
 	log.Info("job completed")
