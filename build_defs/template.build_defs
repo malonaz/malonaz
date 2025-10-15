@@ -81,6 +81,7 @@ def go_template(
         name=name,
         cmd = [
             f"$TOOLS " + " ".join(args),
+            "gofmt -w $OUTS",
         ],
         tools = [CONFIG.MALONAZ.TEMPLATES_GO],
         deps = deps + template_deps + ([data] if data else []),
