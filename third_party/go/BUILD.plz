@@ -1270,21 +1270,8 @@ go_mod_download(
     name = "github.com__malonaz__core",
     _tag = "download",
     module = "github.com/malonaz/core",
-    version = "v0.0.0-20251015144659-30a5eb45dcaa",
+    version = "v0.0.0-20251023114224-1502fd8971fe",
     visibility = ["PUBLIC"],
-)
-
-go_module(
-    name = "github.com__malonaz__core__genproto__codegen__admin_api",
-    download = ":_github.com__malonaz__core#download",
-    install = ["genproto/codegen/admin_api"],
-    module = "github.com/malonaz/core",
-    visibility = ["PUBLIC"],
-    deps = [
-        ":google.golang.org__protobuf__reflect__protoreflect",
-        ":google.golang.org__protobuf__runtime__protoimpl",
-        ":google.golang.org__protobuf__types__descriptorpb",
-    ],
 )
 
 go_module(
@@ -1295,6 +1282,19 @@ go_module(
     visibility = ["PUBLIC"],
     deps = [
         ":google.golang.org__genproto__googleapis__api__expr__v1alpha1",
+        ":google.golang.org__protobuf__reflect__protoreflect",
+        ":google.golang.org__protobuf__runtime__protoimpl",
+        ":google.golang.org__protobuf__types__descriptorpb",
+    ],
+)
+
+go_module(
+    name = "github.com__malonaz__core__genproto__codegen__gateway",
+    download = ":_github.com__malonaz__core#download",
+    install = ["genproto/codegen/gateway"],
+    module = "github.com/malonaz/core",
+    visibility = ["PUBLIC"],
+    deps = [
         ":google.golang.org__protobuf__reflect__protoreflect",
         ":google.golang.org__protobuf__runtime__protoimpl",
         ":google.golang.org__protobuf__types__descriptorpb",
@@ -1342,10 +1342,7 @@ go_module(
     install = ["go/flags"],
     module = "github.com/malonaz/core",
     visibility = ["PUBLIC"],
-    deps = [
-        ":github.com__jessevdk__go-flags",
-        ":github.com__malonaz__core__go__logging",
-    ],
+    deps = [":github.com__jessevdk__go-flags"],
 )
 
 go_module(

@@ -10,7 +10,7 @@ require (
 	github.com/NathanBaulch/protoc-gen-cobra v1.2.1
 	github.com/bazelbuild/buildtools v0.0.0-20250306161121-931d76d6a639
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3
-	github.com/malonaz/core v0.0.0-20251015144659-30a5eb45dcaa
+	github.com/malonaz/core v0.0.0-20251023114224-1502fd8971fe
 	github.com/please-build/gcfg v1.6.0
 	github.com/scylladb/go-set v1.0.2
 	github.com/sirupsen/logrus v1.9.3

@@ -12,8 +12,8 @@ import (
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/types/pluginpb"
 
-	_ "github.com/malonaz/core/genproto/codegen/admin_api"
 	_ "github.com/malonaz/core/genproto/codegen/aip"
+	_ "github.com/malonaz/core/genproto/codegen/gateway"
 	_ "github.com/malonaz/core/genproto/codegen/model"
 	_ "github.com/malonaz/core/genproto/codegen/rpc"
 )

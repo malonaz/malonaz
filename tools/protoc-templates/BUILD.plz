@@ -9,8 +9,8 @@ go_binary(
     visibility = ["//..."],
     deps = [
         "//third_party/go:github.com__Masterminds__sprig__v3",
-        "//third_party/go:github.com__malonaz__core__genproto__codegen__admin_api",
         "//third_party/go:github.com__malonaz__core__genproto__codegen__aip",
+        "//third_party/go:github.com__malonaz__core__genproto__codegen__gateway",
         "//third_party/go:github.com__malonaz__core__genproto__codegen__model",
         "//third_party/go:github.com__malonaz__core__genproto__codegen__rpc",
         "//third_party/go:google.golang.org__protobuf__compiler__protogen",
